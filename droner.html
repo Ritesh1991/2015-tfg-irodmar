@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  	<link rel="stylesheet" href="css/Proyecto.css">
+	<link rel="icon" type="image/png" href="/img/drone.png" />
+
+	<title>Droner - PFG Ivan Rodriguez - WebRTC on a Drone</title>
+</head>
+
+<body>
+
+<div id='mainDiv'>
+
+	<table width="100%">
+		<tr id = 'titulos'>
+			<th>
+				Local video
+			</th>
+		</tr>
+	</table>
+	<table border="2" width="100%">
+
+		<tr id = 'videos' align="center" width="100%">
+			<td>
+				<video id="localVideo" autoplay controls></video>
+			</td>
+		</tr>
+	</table>
+
+</div>
+<div>
+
+	
+</div>
+
+
+<script type="text/javascript" src="js/zeroc-icejs-master/lib/Ice.js"></script>
+<script type="text/javascript" src="js/zeroc-icejs-master/lib/Glacier2.js"></script>
+<script type="text/javascript" src="js/zeroc-icejs-master/lib/IceStorm.js"></script>
+<script type="text/javascript" src="js/jderobot/cmdvel.js"></script>
+<script type="text/javascript" src="js/jderobot/ardroneextra.js"></script>
+<script type="text/javascript" src="js/jderobot/navdata.js"></script>
+<script type="text/javascript" src="js/jderobot/pose3d.js"></script>
+<script src= js/arDrone.js></script>
+<script type="text/javascript" src="js/stats.min.js"></script>
+
+<script src='/socket.io/socket.io.js'></script>
+<script src='js/socketioDroner.js'></script>
+<script src='js/webRTCDroner.js'></script>
+
+</body>
+</html>
