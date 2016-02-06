@@ -6,8 +6,15 @@ var localStream; // stream local de video + audio
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 var localVideo = document.querySelector('#localVideo'); // 
-var constraints = {video: true, audio: true};
 
+
+var constraints = {
+    audio: false,
+    video: {
+        width: { min: 1024, ideal: 1280, max: 1920 },
+        height: { min: 576, ideal: 720, max: 1080 },
+    }
+};
 // Variable para dataChannel
 var dataChannel;
 var isChannelRunning = false; 
