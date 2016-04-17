@@ -8,6 +8,9 @@ var panelControl = function (){
     var altimeter = $.flightIndicator('#altimeter', 'altimeter', { showBox:false});
     var turn_coordinator = $.flightIndicator('#turn_coordinator', 'turn_coordinator', {turn:0,  showBox:false}); // alas avion
   
+    var battery = document.getElementById("fill");
+  
+  
     function getYaw(qw,qx,qy,qz) {                     
             var rotateZa0=2.0*(qx*qy + qw*qz);
             var rotateZa1=qw*qw + qx*qx - qy*qy - qz*qz;
@@ -62,7 +65,10 @@ var panelControl = function (){
     
         // Heading update
         heading.setHeading(yaw);
-    
+        
+        var bat = navdata.batteryPercent * 100;
+        battery.style.width = "33%";
+        console.log("BATERRRRRYYYY");
         // Vario update
         //variometer.setVario(2*Math.sin(increment/10));    
     }

@@ -62,12 +62,12 @@ var RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
 	//RTCPSessionDescription = mozRTCSessionDescription;
 	//RTCIceCandidate = mozRTCIceCandidate;
 //}
-console.log('RTCPeerConnection object: ' + RTCPeerConnection);
+//console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 
 // Creaamos PeerConnection
 function createPeerConnection(remoteSDP){
-	console.log('llamamos a createpeerconection');
-    console.log(remoteSDP);
+	//onsole.log('llamamos a createpeerconection');
+    //console.log(remoteSDP);
 
 	try{
 		PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
@@ -81,7 +81,7 @@ function createPeerConnection(remoteSDP){
             PeerConnection.createAnswer(gotLocalDescription, onSignalingError);
             PeerConnection.onaddstream = handleRemoteStreamAdded;
             PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
-            console.log('Creando Oferta...');
+            //console.log('Creando Oferta...');
                 // handler del Data Channel creadop por el droner
 	} catch(e){
 		console.log('Fallo al crear PeerConnection, excepcion: ' + e.message);
@@ -89,7 +89,7 @@ function createPeerConnection(remoteSDP){
 }
 
 function gotReceiveChannel(event) {
-	console.log('Receive Channel Callback');
+	//console.log('Receive Channel Callback');
 	dataChannel = event.channel;
 	dataChannel.onmessage = handleMessage;
 	dataChannel.onopen = handleSendChannelStateChange;
@@ -124,7 +124,7 @@ function handleMessage(event) {
 
 function handleSendChannelStateChange() {
 	var readyState = dataChannel.readyState;
-	console.log('Receive channel state is: ' + readyState);
+	//console.log('Receive channel state is: ' + readyState);
 	// If channel ready, enable user's input
 	if (readyState == "open") {
 
@@ -133,7 +133,7 @@ function handleSendChannelStateChange() {
 
 
 function handleIceCandidate(event){
-	console.log('handleIceCandidate event: ', event);
+	//console.log('handleIceCandidate event: ', event);
 	if (event.candidate) {
 		sendMessage({
 		type: 'candidate',
@@ -155,7 +155,7 @@ function handleRemoteStreamAdded(event) {
 	} else{
 		remoteVideo.src = event.stream;
 	}
-    console.log('Remote stream attached!!.');
+    //console.log('Remote stream attached!!.');
 	remoteStream = event.stream;
 }
 

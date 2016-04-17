@@ -35,7 +35,7 @@ io.sockets.on('connection', function (socket){
 
 	// Handle 'message' messages
 	socket.on('message', function (message) {
-		log('Server --> got message: ', message);
+		//log('Server --> got message: ', message);
 		// Si el que envia es Droner hay que mandarlo al watcher
 		if (socket.id == dronerID) {
 			io.sockets.socket(newPeer).emit('message', message);
@@ -46,50 +46,22 @@ io.sockets.on('connection', function (socket){
 	});
 
 	// Handle 'create' messages enviados por Droner
-	socket.on('create', function (room) {
-		var numClients = io.sockets.clients(room).length;
-		log('Server --> Room ' + room + ' has sido creada');
-		socket.join(room);
+	socket.on('create', function () {
+		//log('Server --> Droner has sido conectado');
+		socket.join();
 		dronerID = socket.id;
-		socket.emit('created', room);
-	});
-
-	
-	// Handle 'join watcher' messages enviados por watcher
-	socket.on('join watcher', function (room) {
-		var numClients = io.sockets.clients(room).length;
-		log("Un 'watcher' se ha unido a la Sala: " + room);
-		log('Server --> Room ' + room + ' has ' + numClients + ' client(s)');
-
-		if (numClients < 5) {
-		// Watcher joining...
-			io.sockets.in(room).emit('join watcher', room);
-			socket.join(room);
-			newPeer = socket.id;
-			socket.emit('joined', room);
-		} else { // max 5 clients
-			socket.emit('full', room);
-			log("Sala llena!!!");
-		}
+		socket.emit('created');
 	});
 	
 
 	// Handle 'join remote ' messages enviados por remote
-	socket.on('join remote', function (room) {
-		var numClients = io.sockets.clients(room).length;
-		log("Un 'remote' se ha unido a la Sala: " + room);
-		log('Server --> Room ' + room + ' has ' + numClients + ' client(s)');
-
-		if (numClients < 5) {
-		// Watcher joining...
-			io.sockets.in(room).emit('join remote', room);
-			socket.join(room);
-			newPeer = socket.id;
-			socket.emit('joined', room);
-		} else { // max 5 clients
-			socket.emit('full', room);
-			log("Sala llena!!!");
-		}
+	socket.on('join remote', function () {
+		//log("Server --> Un 'remote' se ha unido.");
+		
+		io.sockets.in().emit('join remote');
+		socket.join();
+		newPeer = socket.id;
+		socket.emit('joined');
 	});
 		
 	

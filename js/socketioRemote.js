@@ -5,20 +5,15 @@
 var panelControl;
 var intervalo = null;
 
-// Pedimos nombre de la sala
-var room = prompt('Introduce el nombre de la sala a la que te quieres unir:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.49.154");
+var socket = io.connect("10.10.48.82");
 
-// Send 'Create or join' message to singnaling server
-if (room !== '') {
-	console.log('Join remote to: ', room);
-	socket.emit('join remote', room);
-}
+socket.emit('join remote');
 
-socket.on('joined', function (room){
-	console.log('This peer has joined room ' + room);
+
+socket.on('joined', function (){
+	//console.log('This peer has joined');
 	panelControl = new panelControl();
 	leftJoystick();
 	rightJoystick();
@@ -28,7 +23,7 @@ socket.on('joined', function (room){
 
 
 socket.on('message', function (message){
-	console.log('Received message:', message);
+	//console.log('Received message:', message);
         if (message.type === 'offer') {
         	createPeerConnection(message);
 
@@ -41,7 +36,7 @@ socket.on('message', function (message){
 
 
 function sendMessage(message){
-	console.log('Enviando mensaje: ', message);
+	//console.log('Enviando mensaje: ', message);
 	socket.emit('message', message);
 }
 

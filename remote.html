@@ -6,12 +6,13 @@
 
 	<link rel="stylesheet" type="text/css" href="css/flightindicators.css">
   	<link rel="stylesheet" href="css/Proyecto.css">
+  	<link rel="stylesheet" href="css/battery.css">
 
 	<script type="text/javascript" src='/socket.io/socket.io.js'></script>
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 
 	<script type="text/javascript" src="js/jquery.flightindicators.js"></script>
-	<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
 
 	<script type="text/javascript" src="js/droneSensors.js"></script>
 	<script type="text/javascript" src= js/joysticks.js></script>
@@ -50,6 +51,16 @@
 
 	<canvas id=mapa class = mapa width=350 height=220>Su navegador no soporta canvas :( </canvas>
 
+
+<div id='battery'>
+  <div class='bottom'></div>
+  <div class='middle'>
+    <span class='glass'></span>
+    <div id='fill' class='fill'></div>
+  </div>
+  <div class='top-b'></div>
+  <div class='top-a'></div>
+</div>
 
 </body>
 </html>

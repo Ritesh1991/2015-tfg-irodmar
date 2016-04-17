@@ -11,8 +11,8 @@ var localVideo = document.querySelector('#localVideo'); //
 var constraints = {
     audio: false,
     video: {
-        width: { min: 1024, ideal: 1280, max: 1920 },
-        height: { min: 576, ideal: 720, max: 1080 },
+        width: { ideal: 1280, max: 1920 },
+        height: {ideal: 720, max: 1080 },
     }
 };
 // Variable para dataChannel
@@ -38,7 +38,7 @@ function handleUserMedia(stream){
 	} else{
 		localVideo.src = stream;
 	}
-	console.log('Adding local stream.');
+	//console.log('Adding local stream.');
 	// Envio un mensaje al servidor como ack de exito al llamar gerUserMedia()	
 }
 
@@ -98,11 +98,11 @@ RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
 //	RTCPSessionDescription = mozRTCSessionDescription;
 //	RTCIceCandidate = mozRTCIceCandidate;
 //}
-console.log('RTCPeerConnection object: ' + RTCPeerConnection);
+//console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 
 // Creaamos PeerConnection
 function createPeerConnection(isRemote){
-	console.log('llamamos a createpeerconection');
+	//console.log('llamamos a createpeerconection');
 	
 		// ********* Funciones de peer connection
 
@@ -170,7 +170,7 @@ function createPeerConnection(isRemote){
 	
 	function handleReceiveChannelStateChange() {
 		var readyState = dataChannel.readyState;
-		console.log('Send channel state is: ' + readyState);
+		//console.log('Send channel state is: ' + readyState);
 		if (readyState == closed) {
 			isChannelRunning = false;
 		}
@@ -191,7 +191,7 @@ function createPeerConnection(isRemote){
 				dataChannel.onmessage = handleMessage;
 				dataChannel.onclose = handleReceiveChannelStateChange;
 				isChannelRunning = true;
-				console.log('Created datachannel');
+				//console.log('Created datachannel');
 			} catch (e) {
 				console.log('createDataChannel() failed with exception: ' + e.message);
 			}
@@ -199,15 +199,15 @@ function createPeerConnection(isRemote){
 		
 		
 		PeerConnection.addStream(localStream); // Añadimos localStream a PeerConnection
-		console.log('Añadido stream a PeerConnection');
+		//console.log('Añadido stream a PeerConnection');
 		PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
-		console.log('Creando Oferta...');	
+		//console.log('Creando Oferta...');	
 		PeerConnection.createOffer(gotLocalDescription, onSignalingError);
 		
 		
 		
 		socket.on('message', function (message){
-		console.log('Received message:', message);
+		//console.log('Received message:', message);
 		if (message.type === 'answer') {
 			PeerConnection.setRemoteDescription(new RTCPSessionDescription(message));
 		} else if (message.type === 'candidate') {
