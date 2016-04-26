@@ -1,5 +1,5 @@
 // Archivo que se encarga de la comunicacion con el servidor de señalozacion y llama a las funciones necesarias de webRTC
-//del droenr
+//del droner
 var arDrone;
 var intervalo;
 

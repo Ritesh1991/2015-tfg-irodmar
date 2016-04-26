@@ -1,18 +1,10 @@
-
-
-#battery, #reflection {
-  margin: 0 auto 2px auto;
-  width: 8%;
-}
-
 #battery {
+  margin: 0 auto 2px auto;
+  width: 53px;
   margin-top: 50px;
 }
 
-#reflection {
-  opacity: 0.4;
-  transform: scaleY(-1);
-}
+
 
 .bottom, .middle, .top-b, .top-a {
   margin-right: -4px;
@@ -22,8 +14,8 @@
   background: #444 linear-gradient(rgba(255, 255, 255, 0.3) 0%, transparent 13%, transparent 20%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 30%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.5) 90%);
   border-radius: 3px;
   display: inline-block;
-  height: 100px;
-  width: 8px;
+  height: 30px;
+  width: 3px;
   vertical-align: middle;
 }
 
@@ -32,8 +24,8 @@
   border-radius: 3px;
   display: inline-block;
   overflow: hidden;
-  height: 100px;
-  width: 200px;
+  height: 30px;
+  width: 45px;
   vertical-align: middle;
 }
 
@@ -41,26 +33,26 @@
   background: #444 linear-gradient(rgba(255, 255, 255, 0.3) 0%, transparent 13%, transparent 20%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 30%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.5) 90%);
   border-radius: 3px;
   display: inline-block;
-  height: 50px;
-  width: 8px;
+  height: 15px;
+  width: 3px;
   vertical-align: middle;
 }
 
 .fill {
   background: linear-gradient(#0c0 0%, #00aa00 50%, #0c0 100%);
   box-shadow: 0 0 10px #0c0;
-  height: 96px;
+  height: 26px;
   margin: 2px 0;
-  width: 55%;
+  width: 50%;
 }
 
 .glass {
   background-image: linear-gradient(rgba(255, 255, 255, 0.3) 0%, transparent 10%, transparent 20%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.25) 20%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.25) 90%);
   border-radius: 3px;
   display: block;
-  height: 100px;
+  height: 30px;
   position: absolute;
-  width: 200px;
+  width: 45px;
   z-index: 1;
 }
 
@@ -71,4 +63,5 @@
   width: 101%;
   z-index: 2;
 }
+
 

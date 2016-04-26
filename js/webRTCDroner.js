@@ -89,16 +89,7 @@ RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDes
 window.dess = RTCPSessionDescription;
 RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
                         window.webkitRTCIceCandidate || window.msRTCIceCandidate;
-// Chrome
-//if (navigator.webkitGetUserMedia){
-//	RTCPeerConnection = webkitRTCPeerConnection;
-// Firerox
-//} else if (navigator.mozGetUserMedia) {
-//	RTCPeerConnection = mozRTCPeerConnection;
-//	RTCPSessionDescription = mozRTCSessionDescription;
-//	RTCIceCandidate = mozRTCIceCandidate;
-//}
-//console.log('RTCPeerConnection object: ' + RTCPeerConnection);
+
 
 // Creaamos PeerConnection
 function createPeerConnection(isRemote){
@@ -143,7 +134,7 @@ function createPeerConnection(isRemote){
 	
 	
 	
-	// ******* Funciones del DataChannel ********
+	// ******* Manejador de datos recibidos ********
 	function handleReceiveData(data) {
 		if ("orden" in data) {
 			if (data.orden == "takeoff") {
@@ -162,6 +153,7 @@ function createPeerConnection(isRemote){
 		}		
 	}
 	
+    // Recibimos los paquetes del datachannel y los enviamos al manejador de datos
 	function handleMessage(event) {
 		//console.log('Received message: ' + event.data);
 		var data = JSON.parse(event.data);
@@ -183,7 +175,7 @@ function createPeerConnection(isRemote){
 		if (isRemote) {		
 			try {
 				// Create a reliable data channel
-				dataChannel = PeerConnection.createDataChannel("droneDataChannel", {ordered: true, maxRetransmits: 3});
+				dataChannel = PeerConnection.createDataChannel("droneDataChannel", {ordered: false});
 				dataChannel.onerror = function (error) {
 					console.log("Data Channel Error:", error);
 				};
