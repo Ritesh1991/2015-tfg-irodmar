@@ -10,7 +10,7 @@
 }
 
 body{
-       background: url(background-drone.jpg) no-repeat;
+       background: url(background.jpg) no-repeat;
        background-size: 100% 100%;
 
 }
@@ -41,7 +41,7 @@ p{ float:left }
 
 .container{
        position: relative;
-       width: 33%;
+       width: 50%;
        height: 100%;
        float:left;
        text-align: center;

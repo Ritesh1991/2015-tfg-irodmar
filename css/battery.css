@@ -1,10 +1,8 @@
-body {
-  background: #222;
-}
+
 
 #battery, #reflection {
   margin: 0 auto 2px auto;
-  width: 225px;
+  width: 8%;
 }
 
 #battery {

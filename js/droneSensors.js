@@ -67,8 +67,7 @@ var panelControl = function (){
         heading.setHeading(yaw);
         
         var bat = navdata.batteryPercent * 100;
-        battery.style.width = "33%";
-        console.log("BATERRRRRYYYY");
+        battery.style.width = String(bat) + "%";
         // Vario update
         //variometer.setVario(2*Math.sin(increment/10));    
     }

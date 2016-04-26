@@ -72,7 +72,7 @@ function disconnecthandler(){
 
 function scangamepad() {
     var gp = navigator.getGamepads()[0];
-    console.log("Compruebo mando");
+    //console.log("Compruebo mando");
     if (gp){
         clearInterval(chromeInterval);
         connecthandler();
