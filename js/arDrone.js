@@ -4,7 +4,7 @@
 
 var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pose3DProxyPort){
         var stats = new Stats();
-        stats.setMode( 1 ); // 0: fps, 1: ms, 2: mb
+        stats.setMode( 0 ); // 0: fps, 1: ms, 2: mb
     
         // align top-left
         stats.domElement.style.position = 'absolute';

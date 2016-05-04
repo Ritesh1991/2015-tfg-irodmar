@@ -7,7 +7,7 @@ var intervalo = null;
 
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.48.82");
+var socket = io.connect("192.168.1.135");
 
 socket.emit('join remote');
 

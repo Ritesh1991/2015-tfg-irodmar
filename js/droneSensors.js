@@ -1,12 +1,13 @@
 var panelControl = function (){
     
+    var s = window.innerWidth*0.16;
     // Control Watches 
-    var attitude = $.flightIndicator('#attitude', 'attitude', {roll:50, pitch:-20, size:200, showBox : false}); // Horizon
-    var heading = $.flightIndicator('#heading', 'heading', {heading:150, showBox:false}); // Compass
+    var attitude = $.flightIndicator('#attitude', 'attitude', {roll:50, pitch:-20, size:s, showBox : false}); // Horizon
+    var heading = $.flightIndicator('#heading', 'heading', {heading:150, showBox:false, size:s}); // Compass
     //var variometer = $.flightIndicator('#variometer', 'variometer', {vario:-5, showBox:true}); // vertical speed
     //var airspeed = $.flightIndicator('#airspeed', 'airspeed', {showBox: false}); // air speed
-    var altimeter = $.flightIndicator('#altimeter', 'altimeter', { showBox:false});
-    var turn_coordinator = $.flightIndicator('#turn_coordinator', 'turn_coordinator', {turn:0,  showBox:false}); // alas avion
+    var altimeter = $.flightIndicator('#altimeter', 'altimeter', { showBox:false, size:s});
+    var turn_coordinator = $.flightIndicator('#turn_coordinator', 'turn_coordinator', {turn:0,  showBox:false, size:s}); // alas avion
   
     var battery = document.getElementById("fill");
   
@@ -68,7 +69,6 @@ var panelControl = function (){
         
         var bat = navdata.batteryPercent * 100;
         battery.style.width = String(bat) + "%";
-        // Vario update
-        //variometer.setVario(2*Math.sin(increment/10));    
+
     }
 }

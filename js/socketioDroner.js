@@ -4,7 +4,7 @@ var arDrone;
 var intervalo;
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.48.82");
+var socket = io.connect("192.168.1.135");
 
 socket.emit('create'); // Creamos conexion con el servidor
 
@@ -41,6 +41,6 @@ socket.on('log', function (array){
 
 
 function startArDrone() {
-	arDrone = new arDrone("10.10.48.82", 17000, 15000, 11000, 19000); //Conexion con el Drone
+	arDrone = new arDrone("192.168.1.135", 17000, 15000, 11000, 19000); //Conexion con el Drone
 	arDrone.start();
 }
