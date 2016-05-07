@@ -67,8 +67,9 @@ var panelControl = function (){
         // Heading update
         heading.setHeading(yaw);
         
-        var bat = navdata.batteryPercent * 100;
-        battery.style.width = String(bat) + "%";
+        // Cambiamos el ancho en el estilo del relleno de la bateria según el nivel de bateria que nos manda el drone
+        battery.style.width = String(navdata.batteryPercent) + "%";
+        window.navdata = navdata;
 
     }
 }

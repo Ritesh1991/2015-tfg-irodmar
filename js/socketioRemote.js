@@ -7,7 +7,7 @@ var intervalo = null;
 
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.0.150");
+var socket = io.connect(Server_IP);
 
 socket.emit('join remote');
 
@@ -24,8 +24,8 @@ socket.on('joined', function (){
 
 socket.on('message', function (message){
 	//console.log('Received message:', message);
-        if (message.type === 'offer') {
-        	createPeerConnection(message);
+    if (message.type === 'offer') {
+        createPeerConnection(message);
 
 	} else if (message.type === 'candidate') {
 		var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
@@ -44,3 +44,8 @@ function sendMessage(message){
 socket.on('log', function (array){
 	console.log.apply(console, array);
 });
+
+
+window.onload = function() {
+	loadRemoteSidebar();
+};

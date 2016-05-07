@@ -4,7 +4,7 @@ var arDrone;
 var intervalo;
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.0.150");
+var socket = io.connect(Server_IP);
 
 socket.emit('create'); // Creamos conexion con el servidor
 
@@ -41,6 +41,11 @@ socket.on('log', function (array){
 
 
 function startArDrone() {
-	arDrone = new arDrone("10.10.0.150", 17000, 15000, 11000, 19000); //Conexion con el Drone
+	arDrone = new arDrone(Drone_IP, BaseExtra_Port, Navdata_Port, CMDVel_Port, Pose3D_Port); //Conexion con el Drone
 	arDrone.start();
 }
+
+
+window.onload = function() {
+	loadDroneSidebar();
+};

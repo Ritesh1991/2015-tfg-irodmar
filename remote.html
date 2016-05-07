@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="js/droneSensors.js"></script>
 	<script type="text/javascript" src= js/joysticks.js></script>
     <script type="text/javascript" src="js/gamePad.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
 
 	<script src="js/three.js"></script>
 	<script src="js/ColladaLoader.js"></script>
@@ -34,19 +35,17 @@
 
 <video id="droneVideo" autoplay ></video>
 
-<div class="container">
+<div class="container2">
     <div id="sidebar">
-        <ul>
-            <li>
 				<form>
 					<p>
-						Drone IP: <input type=text name=droneIP id=droneip/>
+						Drone IP: <input type=text name=droneIP id=droneip placeholder=127.0.0.1/>
 					</p>
 					<p>
-						Server IP: <input type=text name=serverIP id=serverip/>
+						Server IP: <input type=text name=serverIP id=serverip placeholder=127.0.0.1/>
 					</p>
 					<p>
-						Velocidad: <input type=range name=velocidad id=velocidad min=-1 max=1 step="0.1" value=0 onchange="outputUpdate(value)"/> <output for=fader id=velocidad>0</output>
+						Velocidad: <input type=range name=velocidad id=velocidad min=-1 max=1 step="0.1" value=0 onchange="outputUpdate(value)"/> <output for=fader id=velocidad_out>0</output>
 					</p>
 					<p>
 						BaseExtra: <input type=number name=baseextra id=baseextra/> 
@@ -61,12 +60,10 @@
 						CMD: <input type=number name=cmd id=cmd/> 
 					</p>
 				</form>
-			
-			</li>			
-        </ul>
+
     </div>
     <div class="main-content">
-        <a href="#" data-toggle=".container" id="sidebar-toggle">
+        <a href="#" data-toggle=".container2" id="sidebar-toggle">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
@@ -106,39 +103,6 @@
 </div>
 
 
-
-<script>
-
-$(document).ready(function() {
-  $("[data-toggle]").click(function() {
-    var toggle_el = $(this).data("toggle");
-    $(toggle_el).toggleClass("open-sidebar");
-  });
-     
-});
- 
-$(".swipe-area").swipe({
-    swipeStatus:function(event, phase, direction, distance, duration, fingers)
-        {
-            if (phase=="move" && direction =="right") {
-                 $(".container").addClass("open-sidebar");
-                 return false;
-            }
-            if (phase=="move" && direction =="left") {
-                 $(".container").removeClass("open-sidebar");
-                 return false;
-            }
-        }
-});
-
-
-function outputUpdate(vel) {
-
-  document.querySelector('#velocidad').value = vel;
-
-}
-	
-</script>
 
 
 
