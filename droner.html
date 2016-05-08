@@ -3,7 +3,6 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<link rel="stylesheet" href="css/Proyecto.css">
-  	<link rel="stylesheet" href="css/menu_Lateral.css">
 
 	<link rel="icon" type="image/png" href="/img/drone.png" />
 	
@@ -16,43 +15,6 @@
 <body>
 
 	<video id="localVideo" width="600" height="450" autoplay controls wid></video>
-
-<div class="container2">
-    <div id="sidebar">
-				<form>
-					<p>
-						Drone IP: <input type=text name=droneIP id=droneip placeholder=127.0.0.1/>
-					</p>
-					<p>
-						Server IP: <input type=text name=serverIP id=serverip placeholder=127.0.0.1/>
-					</p>
-					<p>
-						Velocidad: <input type=range name=velocidad id=velocidad min=-1 max=1 step="0.1" value=0 onchange="outputUpdate(value)"/> <output for=fader id=velocidad_out >0</output>
-					</p>
-					<p>
-						BaseExtra: <input type=number name=baseextra id=baseextra /> 
-					</p>
-					<p>
-						Navdata: <input type=number name=navdata id=navdata /> 
-					</p>
-					<p>
-						Pose3D: <input type=number name=pose3D id=pose3d /> 
-					</p>
-					<p>
-						CMD: <input type=number name=cmd id=cmd /> 
-					</p>
-				</form>
-
-    </div>
-    <div class="main-content">
-        <a href="#" data-toggle=".container2" id="sidebar-toggle">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </a>
-    </div>
-    </div>
-</div>
 
 
 

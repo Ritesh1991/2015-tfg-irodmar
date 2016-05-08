@@ -10,7 +10,7 @@
     transition:  left 0.4s ease-in-out;
 }
 .container2.open-sidebar {
-    left: 250px;
+    left: 300px;
 }
  
 .swipe-area {
@@ -26,13 +26,13 @@
     background: #2290c9;
     z-index: 100;
     position: absolute;
-    width: 250px;
-    height: 100%;
-    left: -250px;
+    width: 300px;
+    height: 100px;
+    left: -300px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-#sidebar form {
+#sidebar p input {
     margin: 5px;
     padding: 5px;
     list-style: none;
@@ -79,3 +79,4 @@
 .main-content #sidebar-toggle .bar:last-child{
      margin-bottom: 0;   
 }
+

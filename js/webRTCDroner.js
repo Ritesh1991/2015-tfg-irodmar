@@ -98,7 +98,7 @@ function createPeerConnection(isRemote){
 		// ********* Funciones de peer connection
 
 	function handleIceCandidate(event){
-		console.log('handleIceCandidate event: ', event);
+		//console.log('handleIceCandidate event: ', event);
 		if (event.candidate) {
 			sendMessage({
 			type: 'candidate',
@@ -165,6 +165,7 @@ function createPeerConnection(isRemote){
 		//console.log('Send channel state is: ' + readyState);
 		if (readyState == closed) {
 			isChannelRunning = false;
+            clearInterval(intervalo); //Paramos el intervalo de actulizacion con el drone si el canal se cierra
 		}
 	}	
 	

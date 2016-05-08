@@ -49,8 +49,8 @@ function updateGamePad() {
             var Yaw = applyDeadzone(gp.axes[2], 0.12);
             var Alt = applyDeadzone(gp.axes[3], 0.12);
          }
-         sendCMDVel(-X,Y);// Change variables and send the command to the drone
-         sendAltYaw(-Alt, Yaw);
+         sendCMDVel(-X*velocidad,Y*velocidad);// Change variables and send the command to the drone
+         sendAltYaw(-Alt*velocidad, Yaw*velocidad);
     }
 }
 

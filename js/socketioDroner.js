@@ -44,8 +44,3 @@ function startArDrone() {
 	arDrone = new arDrone(Drone_IP, BaseExtra_Port, Navdata_Port, CMDVel_Port, Pose3D_Port); //Conexion con el Drone
 	arDrone.start();
 }
-
-
-window.onload = function() {
-	loadDroneSidebar();
-};
