@@ -1,82 +1,94 @@
-.container2 {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    -webkit-transition:  left 0.4s ease-in-out;
-    -moz-transition:  left 0.4s ease-in-out;
-    -ms-transition:  left 0.4s ease-in-out;
-    -o-transition:  left 0.4s ease-in-out;
-    transition:  left 0.4s ease-in-out;
-}
-.container2.open-sidebar {
-    left: 300px;
-}
- 
-.swipe-area {
-    position: absolute;
-    width: 50px;
-    left: 0;
-    top: 0;
-    height: 100%;
-    background: #f3f3f3;
-    z-index: 0;
-}
-#sidebar {
-    background: #2290c9;
-    z-index: 100;
-    position: absolute;
-    width: 300px;
-    height: 100px;
-    left: -300px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-}
-#sidebar p input {
-    margin: 5px;
-    padding: 5px;
-    list-style: none;
+/* Important styles */
+#toggle {
+  display: block;
+  width: 28px;
+  height: 30px;
+  margin: 30px auto 10px;
 }
 
-.main-content {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    position: relative;
+#toggle span:after,
+#toggle span:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -9px;
 }
-.main-content .content{
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    padding-left: 60px;
-    width: 100%;
+#toggle span:after{
+  top: 9px;
 }
-.main-content .content h1{
-    font-weight: 100;
+#toggle span {
+  position: relative;
+  display: block;
 }
-.main-content .content p{
-    width: 100%;
-    line-height: 160%;
+
+#toggle span,
+#toggle span:after,
+#toggle span:before {
+  width: 100%;
+  height: 5px;
+  background-color: #888;
+  transition: all 0.3s;
+  backface-visibility: hidden;
+  border-radius: 2px;
 }
-.main-content #sidebar-toggle {
-    background: #2290c9;
-    border-radius: 3px;
-    display: block;
-    position: relative;
-    padding: 10px 7px;
-    float: left;
-    z-index: 100;
+
+/* on activation */
+#toggle.on span {
+  background-color: transparent;
 }
-.main-content #sidebar-toggle .bar{
-    display: block;
-    width: 18px;
-    margin-bottom: 3px;
-    height: 2px;
-    background-color: #fff;
-    border-radius: 1px;   
+#toggle.on span:before {
+  transform: rotate(45deg) translate(5px, 5px);
 }
-.main-content #sidebar-toggle .bar:last-child{
-     margin-bottom: 0;   
+#toggle.on span:after {
+  transform: rotate(-45deg) translate(7px, -8px);
+}
+#toggle.on + #menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* menu appearance*/
+#menu {
+  position: relative;
+  color: #999;
+  width: 200px;
+  padding: 10px;
+  margin: auto;
+  font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+  text-align: center;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  /* just for this demo */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .4s;
+}
+#menu:after {
+  position: absolute;
+  top: -15px;
+  left: 85px;
+  content: "";
+  display: block;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 20px solid white;
+}
+ul, li, li a {
+  list-style: none;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+li a {
+  padding: 5px;
+  color: #888;
+  text-decoration: none;
+  transition: all .2s;
+}
+li a:hover,
+li a:focus {
+  background: #1ABC9C;
+  color: #fff;
 }
 

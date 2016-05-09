@@ -35,23 +35,6 @@
 
 <video id="droneVideo" autoplay ></video>
 
-<div class="container2">
-    <div id="sidebar">
-		<p>Velocidad</p>
-		<input type=range data-show-value="true" name=velocidad id=velocidad min=0 max=1 step="0.1" value=0 onchange="outputUpdate(value)"/> <output for=fader id=velocidad_out>0</output>
-    </div>
-    <div class="main-content">
-        <a href="#" data-toggle=".container2" id="sidebar-toggle">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </a>
-    </div>
-    </div>
-</div>
-
-
-
 <section>
 	<span id="attitude"></span>
 	<span id="altimeter"></span>
@@ -60,7 +43,7 @@
 </section>
 
 <div id = buttons>
-	<button id = takeoff onclick = enviarOrden("takeoff")>Take Off</button>        
+	<button id = takeoff type= button class= button onclick= enviarOrden("takeoff")>Take Off</button>        
 	<button id = landing onclick = enviarOrden("land")>Landing</button>
 </div>	
 
@@ -81,7 +64,14 @@
 </div>
 
 
-
+<a href="#menu" id="toggle"><span></span></a>
+<div id="menu">
+  <ul>
+    <li>Velocidad</li>    
+    <li><input type=range data-show-value="true" name=velocidad id=velocidad min=0 max=1 step="0.1" value=0 onchange="outputUpdate(value)"/> </li>
+	<li><output for=fader id=velocidad_out>0</output></li>
+  </ul>
+</div>
 
 
 </body>

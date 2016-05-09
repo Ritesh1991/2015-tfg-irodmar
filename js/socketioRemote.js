@@ -47,5 +47,5 @@ socket.on('log', function (array){
 
 
 window.onload = function() {
-	loadRemoteSidebar();
+	loadVelMenu();	
 };
