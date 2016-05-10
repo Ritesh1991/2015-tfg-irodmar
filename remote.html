@@ -8,6 +8,8 @@
   	<link rel="stylesheet" href="css/Proyecto.css">
   	<link rel="stylesheet" href="css/battery.css">
   	<link rel="stylesheet" href="css/menu_Lateral.css">
+  	<link rel="stylesheet" href="css/buttons.css">
+
 
 	<script type="text/javascript" src='/socket.io/socket.io.js'></script>
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
@@ -42,9 +44,9 @@
 	<span id="heading"></span>
 </section>
 
-<div id = buttons>
-	<button id = takeoff type= button class= button onclick= enviarOrden("takeoff")>Take Off</button>        
-	<button id = landing onclick = enviarOrden("land")>Landing</button>
+<div id = buttons>	
+	<a href="#" data-icon="" class="button orange shield xs" onclick= enviarOrden("takeoff")> TakeOff</a>
+	<a href="#" data-icon="" class="button green shield xs" onclick = enviarOrden("land")>Landing</a>
 </div>	
 
 	<canvas id='leftJoystick' class = joystick width=160 height=160>Su navegador no soporta canvas :( </canvas>

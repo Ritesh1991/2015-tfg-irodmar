@@ -96,14 +96,6 @@ video#droneVideo {
        float: right;
 }
 
-#buttons {
-       position: absolute;
-       top: 10px;
-       left: 50%;
-       transform: translate(-50%, -5%);
-}
-
-
 
 
 #leftJoystick {
