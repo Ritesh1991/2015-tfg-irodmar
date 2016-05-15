@@ -1,16 +1,16 @@
 
 // Archivo que guarda las variables de configiracion y que podemos modificar desde la aplicacion
 
-var Server_IP = "10.10.0.97"; //IP del servidor de señalizacion
+var Server_IP = "127.0.0.1"; //IP del servidor de señalizacion
 
-var Drone_IP = "10.10.0.97"; // IP del drone -- ardroneserver
+var Drone_IP = "192.168.1.4"; // IP del drone -- ardroneserver
 
 var BaseExtra_Port = 17000; // Puertos de conexion con el Drone
 var CMDVel_Port = 11000;
 var Pose3D_Port = 19000;
 var Navdata_Port = 15000;
 
-var velocidad = 0.7; // Variable con la que multiplico en el joystick y en el gamepad para modificar la velocidad del drone
+var velocidad = 0.3; // Variable con la que multiplico en el joystick y en el gamepad para modificar la velocidad del drone
 
 
 // based on Todd Motto functions
