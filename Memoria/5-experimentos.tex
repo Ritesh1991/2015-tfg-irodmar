@@ -1,14 +1,21 @@
 \chapter{Experimentos}
 
-En capítulos anteriores se han expuesto los objetivos marcados para la realización del proyecto así como la solución desarrollada para cada uno de estos problemas y las herramientas utilizadas para las mismas. En este capítulo se muestran los experimentos que se han ido realizando según íbamos cumpliendo objetivos.\\
+En capítulos anteriores se han expuesto los objetivos marcados para la realización del proyecto así como la solución desarrollada para cada uno de estos problemas y las herramientas utilizadas para los mismos. En este capítulo se muestran los experimentos que se han ido realizando según íbamos cumpliendo objetivos.\\
 
 \section{Simulador Gazebo}
 
 Una vez desarrollado el proyecto y satisfaciendo todos los objetivos marcados se han realizado pruebas sobre la plataforma de simulación Gazebo para comprobar sin ningún tipo de riesgos el funcionamiento del mismo.\\
 
-Para realizar este experimento asemejandose de la manera más realista al experimento final con el drone real se ha utilizado un \emph{Intel Compute Stick}\footnote{\url{http://www.intel.com/content/www/us/en/compute-stick/compute-stick-product-brief.html}} como par local, encargado de conectarse a las interfaces ICE que nos proporciona el plugin ArDrone desarrollado por JdeRobot para el simulador Gazebo. Este ordenador está compuesto por un procesador Intel Atom que corre Ubuntu 14.04 LTS como sistema operativo. El simulador Gazebo se ha ejecutado en el mismo equipo que correrá el navegador remoto, desde el que teledirigimos el drone.\\
+Para realizar este experimento asemejandose de la manera más realista al experimento final con el drone real se ha utilizado un \emph{Intel Compute Stick}\footnote{\url{http://www.intel.com/content/www/us/en/compute-stick/compute-stick-product-brief.html}} como par local, encargado de conectarse a las interfaces ICE que nos proporciona el plugin ArDrone desarrollado por JdeRobot para el simulador Gazebo. Este ordenador está compuesto por un procesador Intel Atom que corre Ubuntu 14.04 LTS como sistema operativo. El simulador Gazebo se ha ejecutado en un portátil y utilizaremos otro equipo portátil como par remoto desde el que teleoperaremos el drone y además utilizaremos para ejecutar el servidor de señalización.\\
 
-Los resultados de este experimento han sido muy positivos, el control y manejo del drone ha sido de manera fluida y sin realizar ningún tipo de movimiento extraño producido por algún tipo de mal-funcionamiento del código. El manejo se ha realizado tanto con los \emph{joysticks} virtuales como con el mando.\\
+Los resultados de este experimento han sido muy positivos, el control y manejo del drone ha sido de manera fluida y sin realizar ningún tipo de movimiento extraño producido por algún tipo de mal-funcionamiento del código. El manejo se ha realizado tanto con los \emph{joysticks} virtuales como con el mando. Puedes ver un fotograma del vídeo\footnote{\url{http://jderobot.org/Irodmar-tfg#WebRTC_on_a_drone_working_with_Gazebo5}} del experimento en la figura \ref{fig:experimentogazebo}.\\
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{experimentogazebo}
+\caption{Experimento con el simulador gazebo.}
+\label{fig:experimentogazebo}
+\end{figure}
 
 Una vez superado este experimento se ha realizado el siguiente, consistiendo en realizar pruebas con el drone real.\\
 
@@ -34,7 +41,7 @@ Esta prueba también ha sido un éxito, por lo que nos marcamos el siguiente exp
 
 Como tercer y último experimento hemos probado a volar el drone utilizando dispositivos móviles. WebRTC tiene soporte para dispositivos móviles y los elementos de control los hemos desarrollado también para dispositivos táctiles, podemos utilizarlos como par remoto, par local o ambos. Al igual que el experimento anterior se ha realizado en dos pasos, primero sin colocar el dispositivo a bordo del drone para confirmar su correcto funcionamiento y posteriormente repitiéndolo con el dispositivo a bordo. Realizar experimentos con dispositivos móviles implica la necesidad de la utilización de un ordenador de apoyo que será el que ejecute tanto el servidor de señalización para WebRTC cómo \emph{ardrone\_server}.\\
 
-Como primer experimento se ha utilizado un ordenador como par local y un móvil como par remoto desde el que gobernamos los movimientos del drone. En la figura \ref{fig:experimentodronemultidispositivo1} se puede apreciar un momento del vídeo del experimento\footnote{\url{http://jderobot.org/Irodmar-tfg\#Flying\_with\_a\_mobile\_like\_Remote\_PC}}.\\
+Como primer experimento se ha utilizado un ordenador como par local y un móvil como par remoto desde el que gobernamos los movimientos del drone. En la figura \ref{fig:experimentodronemultidispositivo1} se puede apreciar un instante del experimento cuyo vídeo se encuentra en la mediawiki\footnote{\url{http://jderobot.org/Irodmar-tfg\#Flying\_with\_a\_mobile\_like\_Remote\_PC}}.\\
 
 \begin{figure}[h!]
 \centering
@@ -43,7 +50,7 @@ Como primer experimento se ha utilizado un ordenador como par local y un móvil 
 \label{fig:experimentodronemultidispositivo1}
 \end{figure}
 
-El segundo experimento es a la inversa, se utiliza un ordenador como par remoto y un dispositivo móvil como par local, encargándose de establecer la conexion con el drone. En este caso las imágenes que se envían son las de cualquieras de las dos cámaras del móvil, la delantera o la trasera. La figura \ref{fig:experimentodronemultidispositivo2} muestra un momento del experimento que esta recogido en un vídeo en la mediawiki\footnote{\url{http://jderobot.org/Irodmar-tfg#Flying_with_a_mobile_like_Droner_PC}}.\\
+El segundo experimento es a la inversa, se utiliza un ordenador como par remoto y un dispositivo móvil como par local, encargándose de establecer la conexion con el drone. En este caso las imágenes que se envían son de una de las dos cámaras del móvil, la delantera o la trasera, pudiendo elegir cualquiera de las dos. La figura \ref{fig:experimentodronemultidispositivo2} muestra un momento del experimento que esta recogido en un vídeo en la mediawiki\footnote{\url{http://jderobot.org/Irodmar-tfg#Flying_with_a_mobile_like_Droner_PC}}.\\
 
 \begin{figure}[h!]
 \centering
