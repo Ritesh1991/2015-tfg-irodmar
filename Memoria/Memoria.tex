@@ -65,6 +65,34 @@
 
 \begin{document}
 
+\include{portada}
+
+\clearpage
+\thispagestyle{empty}
+
+\vspace{5cm}
+\makebox[15cm][r]{
+\begin{tabular}{ll}
+&\emph{A mis padres y hermanos,}\\
+&\emph{que siempre han estado a mi lado,}\\
+&\emph{y siempre lo estarán.}\\
+&\\
+&\emph{Y a mis amigos, por ser }\\
+&\emph{verdaderamente mis amigos.}\\
+&\\
+&\emph{Gracias.}
+\\
+\end{tabular}
+}
+
+\let\OLDthebibliography=\thebibliography
+\def\thebibliography#1{\OLDthebibliography{#1}%
+  \addcontentsline{toc}{chapter}{\bibname}}
+
+\tableofcontents
+\listoffigures
+
+
 \include{1-introduccion}
 \include{2-objetivos}
 \include{3-infraestructura-software}
@@ -104,6 +132,7 @@
 \bibitem{threejs_doc} Documentación de Three.js \url{http://mrdoob.github.io/three.js/docs/}
 \bibitem{threejs_curso} Curso de Three.js \url{http://stemkoski.github.io/Three.js/}
 \bibitem{jquery} Página de JQuery \url{https://jquery.com/}
+
 \end{thebibliography} 
 
 
