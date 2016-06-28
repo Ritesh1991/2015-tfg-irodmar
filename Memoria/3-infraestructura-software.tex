@@ -91,7 +91,7 @@ Enviar audio y/o vídeo con calidad e intercambiar cualquier tipo de datos requi
 
 Con unas docenas de líneas de JavaScript podemos tener una videoconferencia entre pares con intercambio de archivos o datos en tiempo real. Ese es el potencial que WebRTC tiene. Pero aún así hay una serie de escollos como la señalización, descubrimiento de pares, negociación de la conexión o seguridad que debemos controlar para conseguir una llamada exitosa.\\
 
-Que WebRTC no necesita un servidor no es del todo cierto, ya que sí que necesita de lo que llamamos Servidor de Señalización. Éste es el encargado de establecer el primer contacto entre ellos, facilitando el intercambio de paquetes de la negociación WebRTC.\\
+Que WebRTC no necesita un servidor no es del todo cierto, ya que sí que necesita de lo que llamamos Servidor de Señalización. Éste es el encargado de establecer el primer contacto entre los pares, facilitando el intercambio de paquetes de la negociación WebRTC.\\
 
 \noindent WebRTC está compuesto de 3 API's:
 
@@ -148,7 +148,7 @@ Por lo tanto, para manejar los descriptores de sesión de manera correcta, los a
 \item Permitir a la oferta ser especificada independientemente de la respuesta.
 \end{itemize}
 
-Para satisfacer estas premisas JSEP aborda esto añadiendo los métodos \emph{setLocalDescription()} y \emph{setRemoteDescription()} y teniendo un campo en los descriptores de sesión indicando el tipo de sesión que se suministra. En la figura \ref{fig:sdp-oferta-respuesta} podemos ver el esquema de intercambio de paquetes SDP y el ajuste de los mismos en cada par segun corresponde.\\
+Para satisfacer estas premisas JSEP aborda esto añadiendo los métodos \emph{setLocalDescription()} y \emph{setRemoteDescription()} y teniendo un campo en los descriptores de sesión indicando el tipo de sesión que se suministra. En la figura \ref{fig:sdp-oferta-respuesta} podemos ver el esquema de intercambio de paquetes SDP y el ajuste de los mismos en cada par según corresponde.\\
 
 \begin{figure}[h!]
 \centering
@@ -224,7 +224,7 @@ Esta información ha de obtenerse de manera local en cada par con el \textit{Age
 \item Enviar \textit{keepalives}.
 \end{itemize}
 
-Una vez se ha finalizado y configurado el proceso de descripción de sesión, el Agente ICE local comienza automáticamente el proceso de descubrir todos los posibles candidatos en el par local. A csada candidato posible se le llama \textit{Candidato ICE}:
+Una vez se ha finalizado y configurado el proceso de descripción de sesión, el Agente ICE local comienza automáticamente el proceso de descubrir todos los posibles candidatos en el par local. A cada candidato posible se le llama \textit{Candidato ICE}:
 
 \begin{enumerate}
 \item El Agente ICE pide al sistema operativo las direcciones IP locales.
@@ -350,7 +350,7 @@ Esta API es la encargada de crear la conexión \emph{Peer-2-Peer} entre el naveg
 
 Es el desarrollador de la aplicación el encargado de llamar a las funciones que componen esta API en el orden, tiempo y forma correcta para cumplir con la arquitectura JSEP y conseguir un intercambio de descriptores de sesión y de Candidatos ICE exitoso.\\
 
-\noindent La función admite dos argumentos opcionales: 
+\noindent La función admite dos argumentos opcionales: \\
 
 \begin{lstlisting}[caption=Llamada a función RTCPeerConnection]
 var PC = new RTCPeerConnection(ICEconfig, pcConstraints);
@@ -366,7 +366,7 @@ El cerebro humano es muy bueno 'rellenando huecos' pero altamente sensible a los
 
 Por este motivo las aplicaciones de audio y vídeo en tiempo real están diseñadas para tolerar pérdidas intermitentes de paquetes. Los codecs pueden rellenar estos pequeños espacios que dejan los paquetes perdidos, muchas veces incluso con muy poco impacto con respecto a la imagen real. Una baja latencia y vicacidad son mucho mas importantes que la fiabilidad (\emph{reliability}).\\
 
-Este requerimiento de vicacidad antes que fiabilidad es la primera razón por la que el protocolo UDP es elegido para el envío de datos en tiempo real. TCP es fiable y tiene entrega ordenada de paquetes. Si uno de ellos se pierde, entonces TCP almacena los paquetes siguientes y para la retransmisión hasta que el paquete perdido es reenviado y recibido. En cambio UDP no garantiza la entrega de paquetes, el orden de entrega, la ruta de los paquetes ni control de congestión de red.\\
+Este requerimiento de vivacidad antes que fiabilidad es la primera razón por la que el protocolo UDP es elegido para el envío de datos en tiempo real. TCP es fiable y tiene entrega ordenada de paquetes. Si uno de ellos se pierde, entonces TCP almacena los paquetes siguientes y para la retransmisión hasta que el paquete perdido es reenviado y recibido. En cambio UDP no garantiza la entrega de paquetes, el orden de entrega, la ruta de los paquetes ni control de congestión de red.\\
 
 WebRTC usa UDP como protocolo de transporte. Dadas las características de UDP, ¿podemos simplemente enviar cada paquete según llega y olvidarnos? no, ya que también necesitamos mecanismos para atravesar NAT's y cortafuegos, negociar los parámetros de cada flujo, encriptar los datos de usuario, congestión de red... Para abastecer estas necesidades WebRTC tiene una lista de protocolos y servicios que trabajan por encima de UDP [(figura \ref{fig:pila_webrtc})].\\
 

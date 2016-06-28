@@ -17,7 +17,7 @@ En la figura \ref{fig:esquemageneral} se representa el esquema general del proye
 
 \begin{enumerate}[(a)]
 
-\item \textbf{Conexión local: }consta de dos conexiones: se ha utilizado la API \emph{getUserMedia} de WebRTC para acceder a las imágenes de una cámara que también irá a bordo del drone; por otro lado se ha establecido la conexión entre el drone y el navegador utilizando el plugin ICEJS, el cuál nos permite conectarnos con interfaces ICE utilizando \emph{websockets} en el navegador.
+\item \textbf{Conexión local: }consta de dos conexiones: se ha utilizado la API \emph{getUserMedia} de WebRTC para acceder a las imágenes de una cámara que también irá a bordo del drone; por otro lado se ha establecido la conexión entre el drone y el navegador utilizando el plugin ICEJS, el cuál nos permite conectarnos con interfaces ICE a través de \emph{websockets} en el navegador.
 
 \item \textbf{Conexión entre navegadores:} Una conexión punto a punto entre navegadores con la API \emph{RTCPeerConnection} para transferir las imágenes de la cámara, y la API \emph{RTCDataChannel} para transferir los datos de los sensores y las órdenes dadas. 
 
@@ -45,7 +45,7 @@ Como ya se comentó en la sección \ref{sec:senalizacion} el momento en el que s
 
 Como se puede observar el par local es el que lleva la iniciativa de la conexión. En primer término inicia la comunicación con el servidor de señalización. Una vez que éste le contesta afirmativamente a su mensaje de creación de la comunicación inicia un proceso en el que se conecta al cuadricóptero y accede a la cámara. Una vez realizados estos dos procesos espera a que un par remoto quiera unirse a la conexión.\\
 
-Cuando el par remoto accede a servidor de señalización, éste le envía un mensaje al par local indicando que un par remoto se ha conectado. En este momento el par local inicia la creación de la conexión \emph{RTCPeerConection} de WebRTC. Primero se produce el intercambio de paquetes SDP a través del servidor de señalización, y posteriormente el de ICE. Una vez finalizados ambos ya tenemos establecida la conexión WebRTC entre ambos pares.\\
+Cuando el par remoto accede al servidor de señalización, éste le envía un mensaje al par local indicando que un par remoto se ha conectado. En este momento el par local inicia la creación de la conexión \emph{RTCPeerConection} de WebRTC. Primero se produce el intercambio de paquetes SDP a través del servidor de señalización, y posteriormente el de ICE. Una vez finalizados ambos ya tenemos establecida la conexión WebRTC entre ambos pares.\\
 
 \section{Conexión local drone-navegador}
 
@@ -152,7 +152,7 @@ Nótese en la nomenclatura que donde pone \emph{nombre\_interfaz} se corresponde
 La comunicación con las interfaces se realiza mediante el objeto promesa o \emph{promise} de JavaScript. Este objeto se usa para las comunicaciones asíncronas y se caracteriza por tener tres estados: pendiente, cumplida o rechazada. Cuando una promesa ha sido llamada puede presentar el estado cumplida o rechazada, lo que nos permite llamar al argumento correspondiente y poder actuar en consonancia. De esta manera podemos hacer que métodos asíncronos actúen como métodos síncronos.\\
 
 El núcleo de la conexión con el servidor \emph{ardrone\_server} queda como sigue:\\
-
+\newpage
 \begin{lstlisting}[caption=Núcleo ArDrone]
 // base extra connection
 var baseextra = communicator.stringToProxy("ardrone_extra:ws -h " + ip + " -p " + baseextraPort);
@@ -258,7 +258,7 @@ function land() {
 
 Ejecutar estas órdenes en el drone se realiza en JavaScript también con el objeto promesa, con sus respectivos argumentos de éxito o error en la ejecución de la misma.\\
 
-Las interfaces ICE \emph{Navdata} y \emph{Pose3D} son las encargadas de suministrar todos los datos de navegación de los sensores. Las funciones JavaScript con las que accedemos a estas interfaces y actualizamos todos estos datos son las siguientes:\\
+Las interfaces ICE \emph{Navdata} y \emph{Pose3D} son las encargadas de suministrar todos los datos de navegación de los sensores. Las funciones JavaScript con las que accedemos a estas interfaces y actualizamos todos estos datos son las siguientes:
 
 \begin{lstlisting}[caption=Variables actualización datos de los sensores.]
 function updateNavData() {

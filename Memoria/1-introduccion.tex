@@ -8,7 +8,7 @@ Las tecnologías web son otro campo que ha experimentado un avance enorme en los
 
 El fondo del proyecto consiste aunar estos dos campos. Se pretende desarrollar una aplicación web con tecnologías de última generación que permita teleoperar el drone desde un ordenador o dispositivo móvil.\\
 
-En las siguientes páginas se darán unas pinceladas sobre la robótica y su uso actual. También hablaremos sobre los sistemas actuales de control y manejo de drones. Para finalizar daremos una visión global sobre las tecnologías existentes dentro de las comunicaciones en tiempo real (RTC, Real Time Communications), que se pueden emplear para comunicar, por ejemplo, un drone con una estación en tierra.\\
+En las siguientes páginas se darán unas pinceladas sobre la robótica y su uso actual. También hablaremos sobre los sistemas actuales de control y manejo de drones. Para finalizar daremos una visión global sobre las tecnologías existentes dentro de las comunicaciones en tiempo real (RTC, \emph{Real Time Communications}), que se pueden emplear para comunicar, por ejemplo, un drone con una estación en tierra.\\
 
 \section{Robótica aérea}
 
@@ -16,7 +16,7 @@ Robótica es la rama de la ingeniería mecánica, ingeniería eléctrica, ingeni
 
 Es una rama que ha conseguido grandes avances no sólo en tareas que realizaban con anterioridad personas, sino además en otras que suponen una gran dificultad para ser realizadas por estas ya sea por su complejidad, como ensamblar elementos milimétricos en placas bases, o por realizarse en entornos peligrosos. Por otro lado también se han desarrollado robots domésticos para hacer nuestro día a día más sencillo.\\
 
-Los robots tienen una parte \emph{hardware} y otro \emph{software}. Entre los componentes \emph{hardware} que componen un robot se encuentran: a) las fuentes de alimentación, para dotar de autonomía a los robots; b) sensores, que se asemejan a los órganos sensoriales humanos y que sirven para obtener información del entorno que les rodea como temperatura u objetos próximos; c) actuadores interactuar con el entorno; d) memoria, microprocesadores y e) dispositivos de comunicación, que es la electrónica que se comunica con el dispositivo remoto y permite gobernar los movimientos.\\
+Los robots tienen una parte \emph{hardware} y otro \emph{software}. Entre los componentes \emph{hardware} que componen un robot se encuentran: a) las fuentes de alimentación, para dotar de autonomía a los robots; b) sensores, que se asemejan a los órganos sensoriales humanos y que sirven para obtener información del entorno que les rodea como temperatura u objetos próximos; c) actuadores, para interactuar con el entorno; d) memoria, microprocesadores y e) dispositivos de comunicación, que es la electrónica que se comunica con el dispositivo remoto y permite gobernar los movimientos.\\
 
 Por otro lado el software, es quien da la inteligencia al robot para llevar a cabo las funciones para las que fue diseñado.\\
 
@@ -108,7 +108,7 @@ La compañía eléctrica Endesa ha comprado una flota de catorce drones para la 
 
 \subsubsection{Hemav, Agricultura de precisión.}
 
-La empresa Hemav\footnote{http://hemav.com} ofrece entre otros servicios agricultura de precisión a través del vuelos con cuadricópteros. Utilizan sensores multiespectrales y/o térmicos para generar mapas aéreos mediante vuelos autónomos que su suministran información relevante para la toma de decisiones (\ref{fig:hemav} (b)).\\
+La empresa Hemav\footnote{http://hemav.com} ofrece entre otros servicios agricultura de precisión a través del vuelos con cuadricópteros. Utilizan sensores multiespectrales y/o térmicos para generar mapas aéreos mediante vuelos autónomos que su suministran información relevante para la toma de decisiones (figura \ref{fig:hemav} (b)).\\
 
 Posteriormente esa información es analizada estadísticamente para generar patrones de estados, similitudes de terreno, detección de patologías, etc, con los que finalmente se genera un informe con las conclusiones especificas.\\
 
@@ -143,11 +143,11 @@ Empresas como Amazon con su proyecto \emph{Prime Air} (figura \ref{fig:amazon}),
 
 \subsubsection{Drones en salvamento marítimo.}
 
-La Agencia de Medios de Vodafone (MEC) y los expertos de Trabajos con Dron\footnote{trabajoscondrone.com} (TcD) han desarrollado un proyecto de drones socorristas. Estos reducen hasta en tres veces el tiempo en llegar al lugar del accidente con respecto al socorrista tradicional.\\
+La Agencia de Medios de Vodafone (MEC) y los expertos de Trabajos con Drone\footnote{http://trabajoscondrone.com} (TcD) han desarrollado un proyecto de drones socorristas. Estos reducen hasta en tres veces el tiempo en llegar al lugar del accidente con respecto al socorrista tradicional.\\
 
 En caso de incidente, el socorrista-piloto conducirá el drone con el mando de radiocontrol ayudándose de la cámara que lleva a bordo, cuando llega al punto de incidencia lanzara un par de flotadores a los que se pueden agarrar hasta que llegue el equipo de salvamento.\\
 
-En la figura figura \ref{fig:socorrista} se puede ver a un piloto de drones realizando pruebas de salvamento marítimo con un drone.||
+En la figura figura \ref{fig:socorrista} se puede ver a un piloto de drones realizando pruebas de salvamento marítimo con un drone.\\
 
  \begin{figure}[h!]
 \centering
@@ -197,7 +197,7 @@ La empresa francesa Parrot, la cual tiene una flota de diversos modelos de drone
 \label{fig:wifiardrone}
 \end{figure}
 
-
+\newpage
 \section{Tecnologías de comunicación en tiempo real}
 
 En la actualidad  existen numerosas tecnologías de comunicación en tiempo real, pero nos centraremos en las que nos ofrecen conectividad multimedia. Primero veremos protocolos que se pueden implementar en aplicaciones de escritorio, y posteriormente veremos los protocolos web más actuales.\\
@@ -267,9 +267,7 @@ Como base para el proyecto tenemos los siguientes trabajos, desarrollados tambi�
 
 \subsection{ArDroneServer}
 
-ArDroneServer\footnote{\url{http://jderobot.org/Amartinflorido-tfg}}\cite{ArDroneServer} es un \emph{driver} para manejar drones desde la plataforma JdeRobot. Utiliza la SDK de ArDrone de Parrot, ha sido desarrollado por Alberto Martín como parte de su Grado Fin de Carrera. Esta aplicación esta inspirada en los paquetes ROS \emph{ardrone\_brown} y \emph{ardrone\_autonomy}. Implementa tres interfaces que nos permites recibir las imágenes del drone, controlar el drone y recoger información de los sensores y cambiar la configuración del drone. Junto a este servidor Alberto ha desarrollado una aplicación capaz de hacer seguimiento horizontal y vertical de objetos.\\
-
-En la figura \ref{fig:ardroneserveralberto} vemos a Alberto realizando un experimento, en el que el drone hace seguimiento vertical de un objeto.\\
+ArDroneServer\footnote{\url{http://jderobot.org/Amartinflorido-tfg}}\cite{ArDroneServer} es un \emph{driver} para manejar drones desde la plataforma JdeRobot. Utiliza la SDK de ArDrone de Parrot, ha sido desarrollado por Alberto Martín como parte de su Grado Fin de Carrera. Esta aplicación esta inspirada en los paquetes ROS \emph{ardrone\_brown} y \emph{ardrone\_autonomy}. Implementa tres interfaces que nos permiten recibir las imágenes del drone, controlar el drone y recoger información de los sensores y cambiar la configuración del drone. Junto a este servidor Alberto ha desarrollado una aplicación capaz de hacer seguimiento horizontal y vertical de objetos. En la figura \ref{fig:ardroneserveralberto} vemos a Alberto realizando un experimento, en el que el drone hace seguimiento vertical de un objeto.\\
 
 \begin{figure}[h!]
 \centering
@@ -280,7 +278,7 @@ En la figura \ref{fig:ardroneserveralberto} vemos a Alberto realizando un experi
 
 \subsection{Surveillance 4.0}
 
-Surveillance 4.0\footnote{\url{http://jderobot.org/D. castellanob-pfc}}\cite{surveillance4.0} es un ejemplo de conexión web con sensores y actuadores, desarrollado por Daniel Castellano como su Proyecto Fin de Carrera. Esta aplicación contaba con varios sensores de distinto tipo (humedad, temperatura, gas, etc) que se conectaban inalámbricamente con un nodo central situado en una Raspberry Pi. La conexión inalámbrica se hacía mediante transmisores Zigbee con un protocolo propio llamado WHAP. El nodo central recibía los datos de los sensores y los mostraba mediante un servidor web que corría en la misma máquina. La aplicación web se desarrolló en Python usando el entorno de desarrollo web Django. En Surveillance 4.0, los valores de los sensores se guardaban en una base de datos que la aplicación web consultaba cuando era necesario. Además, esta versión incluía un streaming de vídeo utilizando el software de código abierto M-JPEG Streamer. En la figura \ref{fig:surveillance4} se puede ver la aplicación.\\
+Surveillance 4.0\footnote{\url{http://jderobot.org/D. castellanob-pfc}}\cite{surveillance4.0} es un ejemplo de conexión web con sensores y actuadores, desarrollado por Daniel Castellano como su Proyecto Fin de Carrera. Esta aplicación contaba con varios sensores de distinto tipo (humedad, temperatura, gas, etc) que se conectaban inalámbricamente con un nodo central situado en una Raspberry Pi. La conexión inalámbrica se hacía mediante transmisores Zigbee con un protocolo propio llamado WHAP. El nodo central recibía los datos de los sensores y los mostraba mediante un servidor web que corría en la misma máquina. La aplicación web se desarrolló en Python usando el entorno de desarrollo web Django. En Surveillance 4.0, los valores de los sensores se guardaban en una base de datos que la aplicación web consultaba cuando era necesario. Además, esta versión incluía un streaming de vídeo utilizando el software de código abierto M-JPEG Streamer.\\
 
 
 \subsection{Surveillance 5.1}

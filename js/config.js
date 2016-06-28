@@ -1,9 +1,9 @@
 
 // Archivo que guarda las variables de configiracion y que podemos modificar desde la aplicacion
 
-var Server_IP = "127.0.0.1"; //IP del servidor de señalizacion
+var Server_IP = "192.168.1.135"; //IP del servidor de señalizacion
 
-var Drone_IP = "192.168.1.4"; // IP del drone -- ardroneserver
+var Drone_IP = "192.168.1.138"; // IP del drone -- ardroneserver
 
 var BaseExtra_Port = 17000; // Puertos de conexion con el Drone
 var CMDVel_Port = 11000;
