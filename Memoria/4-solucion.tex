@@ -333,7 +333,6 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 Acceder a la cámara  con \emph{getUserMedia} se hace a través de una función que admite tres argumentos. El primer argumento que admite la función es una variable en la que le indicamos las restricciones que queremos: audio, vídeo, solo uno de ellos, resoluciones... Las configuraciones para nuestro proyecto son las siguientes:\\
 
 \begin{lstlisting}[caption=Restricciones de getUserMedia]
-
 var constraints = {
     audio: false,
     video: {
@@ -341,7 +340,6 @@ var constraints = {
         height: {ideal: 720, max: 1080 },
     }
 };
-
 \end{lstlisting}
 
 Sólo accedemos al vídeo de la cámara, ya que el audio no lo necesitamos para el proyecto. Por otro lado indicamos una resolución ideal, de 1280x720 píxeles. Si la cámara que le conectamos al ordenador tiene más capacidad restringimos su resolución a HD (1920x1080 píxeles).\\
@@ -400,6 +398,7 @@ Para cumplir con la arquitectura JSEP vamos a utilizar la librería \emph{Socket
 
 Como se puede ver en la figura \ref{fig:flujodellamada}, el servidor recibe cuatro tipos de paquetes diferentes. Cuando se conecta el par local, cuando se conecta el par remoto, intercambio de candidatos ICE e intercambio de SDP. Sabiendo que tanto los candidatos ICE como los paquetes SDP son objetos, decidimos crear el servidor aceptando tres tipos diferentes de paquetes: el inicial del par local, el inicial del par remoto, y mensajes genéricos que contendrían los objetos anteriormente mencionados. Así pues, esta es la forma del código que gestiona en el servidor el intercambio de paquetes para la señalización.\\
 
+\newpage
 \begin{lstlisting}[caption=Núcleo servidor de señalización]
 io.sockets.on('connection', function (socket){
 
@@ -905,7 +904,6 @@ La función \emph{connecthandler()} guarda en una variable el mando conectado y 
 Dentro de la función \emph{updateGamePad()} detectamos el movimiento de los dos \emph{joysticks} del mando. y la pulsación de los botones. Hemos configurado la pulsación de una tecla para el despegue y otra para el aterrizaje, y con los \emph{joysticks} controlamos el vuelo de igual manera que con los \emph{joysticks} virtuales.\\
 
 \begin{lstlisting}[caption=Manajador de mando.]
-
 function updateGamePad() {
     var gp = navigator.getGamepads()[0];
     if (!gp && isChrome) {
@@ -1067,7 +1065,7 @@ loader.load('./collada/quadrotor/quadrotor_4.dae', function ( collada ) {
 });
 \end{lstlisting}
 
-Desde aquí se hace también la primera llamada a la función \emph{render()} que se encargara de actualizar la posición del drone en el mapa. Este re-pintado se produce con la función \emph{requestAnimationFrame()}, la cuál admite como argumento la función a actualizar.
+Desde aquí se hace también la primera llamada a la función \emph{render()} que se encargara de actualizar la posición del drone en el mapa. Este re-pintado se produce con la función \emph{requestAnimationFrame()}, la cuál admite como argumento la función a actualizar.\\
 
 \begin{lstlisting}[caption=Actualización del lienzo.]
 var render = function () {
