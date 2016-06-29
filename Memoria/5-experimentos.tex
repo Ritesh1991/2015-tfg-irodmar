@@ -1,12 +1,19 @@
 \chapter{Experimentos}
 
-En capítulos anteriores se han expuesto los objetivos marcados para la realización del proyecto así como la solución desarrollada para cada uno de estos problemas y las herramientas utilizadas para los mismos. En este capítulo se muestran los experimentos que se han ido realizando según íbamos cumpliendo objetivos.\\
+En capítulos anteriores se han expuesto los objetivos marcados para la realización del proyecto así como la solución desarrollada para cada uno de estos problemas y las herramientas utilizadas para los mismos. En este capítulo se muestran los experimentos que se han ido realizando según íbamos cumpliendo objetivos y que sirven como validación experimental de la solución programada.\\
 
-\section{Simulador Gazebo}
+\section{Experimentos con simulador Gazebo}
 
-Una vez desarrollado el proyecto y satisfaciendo todos los objetivos marcados se han realizado pruebas sobre la plataforma de simulación Gazebo para comprobar sin ningún tipo de riesgos el funcionamiento del mismo.\\
+Una vez desarrollado el proyecto y satisfaciendo todos los objetivos marcados se han realizado pruebas sobre la el drone simulado en Gazebo para comprobar sin ningún tipo de riesgos el funcionamiento del mismo.\\
 
-Para realizar este experimento asemejandose de la manera más realista al experimento final con el drone real se ha utilizado un \emph{Intel Compute Stick}\footnote{\url{http://www.intel.com/content/www/us/en/compute-stick/compute-stick-product-brief.html}} como par local, encargado de conectarse a las interfaces ICE que nos proporciona el plugin ArDrone desarrollado por JdeRobot para el simulador Gazebo. Este ordenador está compuesto por un procesador Intel Atom que corre Ubuntu 14.04 LTS como sistema operativo. El simulador Gazebo se ha ejecutado en un portátil y utilizaremos otro equipo portátil como par remoto desde el que teleoperaremos el drone y además utilizaremos para ejecutar el servidor de señalización.\\
+Para realizar este experimento asemejandose de la manera más realista al experimento final con el drone real se ha utilizado un \emph{Intel Compute Stick}\footnote{\url{http://www.intel.com/content/www/us/en/compute-stick/compute-stick-product-brief.html}} como par local, encargado de conectarse a las interfaces ICE que nos proporciona el plugin ArDrone desarrollado por JdeRobot para el simulador Gazebo. Este ordenador está compuesto por un procesador Intel Atom que corre Ubuntu 14.04 LTS como sistema operativo. El simulador Gazebo se ha ejecutado en un portátil auxiliar y utilizaremos otro equipo portátil como par remoto desde el que teleoperaremos el drone además de ejecutar el servidor de señalización. La figura \ref{fig:esquemaexperimento1} muestra el esquema del montaje de este experimento. \\
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{experimento1}
+\caption{Esquema del experimento con el simulador gazebo.}
+\label{fig:esquemaexperimento1}
+\end{figure}
 
 Los resultados de este experimento han sido muy positivos, el control y manejo del drone ha sido de manera fluida y sin realizar ningún tipo de movimiento extraño producido por algún tipo de mal-funcionamiento del código. El manejo se ha realizado tanto con los \emph{joysticks} virtuales como con el mando. Puedes ver un fotograma del vídeo\footnote{\url{http://jderobot.org/Irodmar-tfg#WebRTC_on_a_drone_working_with_Gazebo5}} del experimento en la figura \ref{fig:experimentogazebo}.\\
 
@@ -15,6 +22,25 @@ Los resultados de este experimento han sido muy positivos, el control y manejo d
 \includegraphics[width=0.9\textwidth]{experimentogazebo}
 \caption{Experimento con el simulador gazebo.}
 \label{fig:experimentogazebo}
+\end{figure}
+
+En la siguiente figura (\ref{fig:secexp1}) se puede observar la secuencia de movimiento del drone durante el experimento.\\
+\newpage
+\begin{figure}[h!]
+\centering
+  \begin{subfigure}[]{47mm}
+    \includegraphics[width=47mm]{sec_exp1_1}
+  \end{subfigure}
+  \hspace{0.5pt}
+  \begin{subfigure}[]{47mm}
+    \includegraphics[width=47mm]{sec_exp1_2}
+  \end{subfigure}
+    \hspace{0.5pt}
+    \begin{subfigure}[]{47mm}
+    \includegraphics[width=47mm]{sec_exp1_3}
+  \end{subfigure}
+    \caption{Secuencia de movimiento del experimento con Gazebo.}
+  \label{fig:secexp1}
 \end{figure}
 
 Una vez superado este experimento se ha realizado el siguiente, consistiendo en realizar pruebas con el drone real.\\
@@ -32,7 +58,30 @@ Así pues la distribución de los equipos es: computer stick como par local, que
 \label{fig:experimentodronereal1}
 \end{figure}
 
+
+\begin{figure}[h!]
+\centering
+  \begin{subfigure}[]{48mm}
+    \includegraphics[width=48mm]{sec_exp2_1}
+  \end{subfigure}
+  \hspace{1pt}
+  \begin{subfigure}[]{48mm}
+    \includegraphics[width=48mm]{sec_exp2_2}
+  \end{subfigure}
+    \hspace{1pt}
+    \begin{subfigure}[]{48mm}
+    \includegraphics[width=48mm]{sec_exp2_3}
+  \end{subfigure}
+    \caption{Secuencia de movimiento del experimento con el drone real.}
+  \label{fig:secexp2}
+\end{figure}
+
+
 Esta prueba también ha sido un éxito, por lo que nos marcamos el siguiente experimento con el drone y la cámara a bordo del drone. Este experimento la configuración es la misma que en el anterior, pero el manejo del drone con la aplicación será más realista ya que tenemos la cámara en primera persona.\\
+
+La configuración de los equipos en este experimento ha consistido en colocar a bordo del drone la cámara, el \emph{computer stick}, el cuál actuará como par local, estableciendo la conexión con el drone y accediendo a la cámara. El drone tiene una conexion USB de salida pero la potencia no es suficiente para hacer funcionar el \emph{computer stick}. Por este motivo se ha tenido que colocar a bordo una pila la cual hará las veces de fuente de alimentación. Por otro lado tenemos un ordenador el cual actúa como par remoto desde el que teleoperaremos el drone y ademas se ha utilizado para ejecutar tanto el servidor de señalizacion como el servidor \emph{ardrone\_server}.\\
+
+Este experimento ha sido fallido únicamente por las capacidades de vuelo que nos ofrece el drone. Entre los dispositivos que hemos colocado a bordo superamos la carga máxima de pago que permite este cuadricóptero. En lo que al desarrollo se refiere ha funcionado perfectamente ya que en el par remoto obteníamos las imágenes y datos de vuelo procedentes del drone, y al ejecutar lar orden de despegue el cuadricóptero ha intentado levantar el vuelo sin conseguirlo.\\
 
 *** FIN EXPERIMENTO CON FOTO Y LINK AL VIDEO***
 

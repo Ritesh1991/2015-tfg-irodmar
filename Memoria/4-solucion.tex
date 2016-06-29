@@ -320,7 +320,7 @@ Contiene seis parámetros que son las velocidades lineales X, Y, Z y las angular
 
 \subsection{getUserMedia}
 
-La interfaz que no hemos utilizado de las que nos ofrece el servidor \texttt{ardrone\_server} es la interfaz \emph{cameraserver}. Esta interfaz se encarga de recoger las imágenes de la cámara integrada en el drone. Para tener una imagen con mas resolución y que nos permita visualizar con mayor calidad se ha optado por colocar una cámara a bordo y acceder a ella con las herramientas que nos suministra WebRTC. Esta cámara se conecta a nuestro ordenador local a través de una conexión USB. Cámara y MiniPC van a a bordo del drone.\\
+La interfaz que no hemos utilizado de las que nos ofrece el servidor \texttt{ardrone\_server} es la interfaz \emph{cameraserver}. Esta interfaz se encarga de recoger las imágenes de la cámara integrada en el drone. La razón por la que no usar la interfaz del drone que accede a la cámara es que queríamos utilizar la tecnología que nos brinda WebRTC con drones, y esto incluye el acceso a una cámara con la API \emph{getUserMedia}. Esta cámara se conecta a nuestro ordenador local a través de una conexión USB. Cámara y MiniPC van a a bordo del drone.\\
 
 Como WebRTC aún no es una norma, para acceder a la cámara desde cualquier navegador debemos crear una variable que sea compatible con todos los que tengan implementado las APIs de WebRTC. Para ello hay que añadirle los prefijos correspondientes de cada navegador:\\
 
@@ -330,10 +330,25 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 \end{lstlisting}
 
 
-Acceder a la cámara a con \emph{GetUserMedia} se hace a través de una función que admite dos llamadas de vuelta o \emph{callback}. Uno de ellos es el callback de éxito, y el segundo el de error. Según sea de exitoso el acceso a la cámara se llamara a una función u otra. Si nos devuelve éxito se llama a una función con la que guardaremos el streaming y lo visualizaremos en un elemento vídeo de HTML5, si devuelve error mostramos en el terminal del navegador un mensaje del error ocurrido.\\
+Acceder a la cámara  con \emph{getUserMedia} se hace a través de una función que admite tres argumentos. El primer argumento que admite la función es una variable en la que le indicamos las restricciones que queremos: audio, vídeo, solo uno de ellos, resoluciones... Las configuraciones para nuestro proyecto son las siguientes:\\
 
-\begin{lstlisting}[caption=getUserMedia.]
+\begin{lstlisting}[caption=Restricciones de getUserMedia]
 
+var constraints = {
+    audio: false,
+    video: {
+        width: { ideal: 1280, max: 1920 },
+        height: {ideal: 720, max: 1080 },
+    }
+};
+
+\end{lstlisting}
+
+Sólo accedemos al vídeo de la cámara, ya que el audio no lo necesitamos para el proyecto. Por otro lado indicamos una resolución ideal, de 1280x720 píxeles. Si la cámara que le conectamos al ordenador tiene más capacidad restringimos su resolución a HD (1920x1080 píxeles).\\
+
+Los siguientes dos argumentos son dos llamadas de vuelta o \emph{callbacks}. El primero es el callback de éxito, y el segundo el de error. Según sea de exitoso el acceso a la cámara se llamará a una función u otra. Si nos devuelve éxito se llama a una función con la que guardaremos el flujo y lo visualizaremos en un elemento vídeo de HTML5. Esta visualización que se produce en el par local no es necesaria pero se ha incluido para tenerlo como referencia a la hora de realizar los experimentos. Si devuelve error mostramos en el terminal del navegador un mensaje del error ocurrido.\\
+
+\begin{lstlisting}[caption={getUserMedia.}, label={lst:getusermedia}]
 // Manejador de exito
 function handleUserMedia(stream){
 	localStream = stream;
@@ -354,56 +369,38 @@ function handleUserMediaError(error){
 
 //Funcion getUserMedia
 navigator.getUserMedia(constraints, handleUserMedia, handleUserMediaError); 
-
 \end{lstlisting}
 
-El primer argumento que admite la función \emph{getUserMedia} es una variable en la que le indicamos las restricciones que queremos: audio, vídeo, solo uno de ellos, resoluciones... Las configuraciones para nuestro proyecto son las siguientes:\\
+El flujo que nos proporciona \emph{getUserMedia} y el cuál guardamos en la variable \emph{localStream} (línea 3 del listado \ref{lst:getusermedia}) será el que enviemos al par remoto con la API \emph{RTCPeerConnection}. Este punto lo veremos en la sección \ref{subsec:transmisionvideo}.\\
 
-\begin{lstlisting}[caption=Restricciones de getUserMedia]
+\section{Conexión entre navegadores}
 
-var constraints = {
-    audio: false,
-    video: {
-        width: { ideal: 1280, max: 1920 },
-        height: {ideal: 720, max: 1080 },
-    }
-};
-
-\end{lstlisting}
-
-Sólo accedemos al vídeo de la cámara, ya que el audio no lo necesitamos para el proyecto. Por otro lado indicamos una resolución ideal, de 1280x720 píxeles. Si la cámara que le conectamos al ordenador tiene más capacidad restringimos su resolución a HD (1920x1080 píxeles).\\
-
-El flujo que nos proporciona \emph{getUserMedia} será el que enviemos al par remoto con la API \emph{RTCPeerConnection}. Este punto lo veremos en la sección \ref{subsec:transmisionvideo}.\\
-
-\section{Conexión multimedia entre navegadores}
-
-Interconectar el ordenador remoto al drone a través de otro ordenador es el segundo de los objetivos marcados. Para ello vamos a utilizar WebRTC por su comunicación entre pares sin necesidad de utilizar servidores intermedios.\\
+Interconectar el ordenador remoto al drone a través del ordenador local es el segundo de los objetivos marcados. Para ello vamos a utilizar WebRTC por su comunicación entre pares sin necesidad de utilizar servidores intermedios.\\
 
 Este objetivo se ha divido en tres sub-objetivos como siguen:
 \begin{itemize}
 
-\item \emph{Visualización de cámara a bordo:} La conexión tiene que ser capaz de transportar el flujo audiovisual de la cámara del drone desde el navegador local hasta el navegador remoto.
+\item \emph{Visualización en remoto de cámara a bordo:} La conexión tiene que ser capaz de transportar el flujo audiovisual de la cámara del drone desde el navegador local hasta el navegador remoto.
 
 \item \emph{Sensores de navegación.} Los datos obtenidos de los sensores de navegación del cuadricóptero como la brújula, el GPS, altímetro... deberán ser enviados al ordenador remoto donde se visualizarán.
 
-\item \emph{Órdenes}. Desde el ordenador remoto deberán enviarse hacia el ordenador local las ordenes dadas para el aterrizaje, despegue, y comandos de movimiento.
+\item \emph{Órdenes}. Desde el ordenador remoto deberán enviarse hacia el ordenador local las órdenes dadas para el aterrizaje, despegue, y comandos de movimiento.
 
 \end{itemize}
 
 Para desarrollar la conexión multimedia entre los navegadores con la tecnología WebRTC lo primero que se ha desarrollado ha sido el servidor de señalización.\\
 
-\subsection{Señalización}
+\subsection{Servidor de señalización}
 
 Las necesidades a cubrir en cuanto al servidor de señalización es que sea capaz de intercambiar los datos de red necesarios (Candidatos ICE) y de paquetes SDP. El intercambio debe hacerse con el protocolo de oferta/respuesta según lo establecido en la arquitectura JSEP explicada con anterioridad.\\
 
-Se ha optado por desarrollar el servidor escrito en el lenguaje de programación \emph{Node.js}\footnote{https://nodejs.org/}. Las razones por las que hemos elegido este servidor es que está escrito en JavaScript, por lo que nos resulta muy útil al utilizarse el mismo lenguaje de programación que vamos a utilizar para el resto del proyecto. Por otro lado es un servidor muy liviano.\\
+Se ha optado por desarrollar el servidor escrito sobre \emph{Node.js}\footnote{https://nodejs.org/}. Las razones por las que hemos elegido este servidor es que está escrito en JavaScript, por lo que nos resulta muy útil al utilizarse el mismo lenguaje de programación que vamos a utilizar para el resto del proyecto. Por otro lado es un servidor muy liviano.\\
 
 Para cumplir con la arquitectura JSEP vamos a utilizar la librería \emph{Socket.io}\footnote{http://socket.io}, la cuál nos facilita el desarrollo de aplicaciones con necesidades de conexión entre equipos a través de \emph{Websockets}.\\
 
 Como se puede ver en la figura \ref{fig:flujodellamada}, el servidor recibe cuatro tipos de paquetes diferentes. Cuando se conecta el par local, cuando se conecta el par remoto, intercambio de candidatos ICE e intercambio de SDP. Sabiendo que tanto los candidatos ICE como los paquetes SDP son objetos, decidimos crear el servidor aceptando tres tipos diferentes de paquetes: el inicial del par local, el inicial del par remoto, y mensajes genéricos que contendrían los objetos anteriormente mencionados. Así pues, esta es la forma del código que gestiona en el servidor el intercambio de paquetes para la señalización.\\
 
 \begin{lstlisting}[caption=Núcleo servidor de señalización]
-
 io.sockets.on('connection', function (socket){
 
 	// Manejador de mensajes genericos 'message' (intercambios SDP y Candidatos ICE)
@@ -439,39 +436,35 @@ io.sockets.on('connection', function (socket){
 });
 \end{lstlisting}
 
-Una vez tenemos el servidor operativo vamos a explicar como se ha creado la conexión entre pares y como se ha usado esta conexion para transmitir el vídeo de la cámara y los datos de los sensores del drone hasta el par remoto.\\
+Una vez tenemos el servidor operativo vamos a explicar cómo se ha creado la conexión entre pares y cómo se ha usado esta conexión para transmitir el vídeo de la cámara y los datos de los sensores del drone hasta el par remoto.\\
 
 \subsection{RTCPeerConnection: Transmisión de vídeo}\label{subsec:transmisionvideo}
 
-La conexión entre pares se crea en el momento en el que el par local recibe del servidor de señalización un mensaje indicando que el par remoto se ha conectado y esta preparado para establecer la conexión. En ese momento se ejecuta una función que configura los parámetros necesarios y  crea la comunicación.\\
+La conexión entre pares se crea en el momento en el que el par local recibe del servidor de señalización un mensaje indicando que el par remoto se ha conectado y está preparado para establecer la conexión. En ese momento se ejecuta una función que configura los parámetros necesarios y  crea la comunicación.\\
 
 Al igual que en \emph{getUserMedia} debemos configurar las variables necesarias para que sean compatibles con todos los navegadores. Para establecer la conexión necesitamos tres variables distintas:\\
 
 
 \begin{lstlisting}[caption=Variables WebRTC]
-
 RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || 
                        window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
                        window.webkitRTCSessionDescription || window.msRTCSessionDescription;
 RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
                         window.webkitRTCIceCandidate || window.msRTCIceCandidate;
-
 \end{lstlisting}
 
-\begin{itemize}
 
+\begin{itemize}
 \item \emph{RTCPeerConnection}: Esta variable es la encargada de crear y mantener la conexión entre pares. Esta variable necesitará de las otras dos para crear la conexión.
 \item \emph{RTCPSessionDescription}: Crea los SDP locales y se encarga de gestionar los SDP recibidos.
 \item \emph{RTCIceCandidate}: Encargada de descubrir los Candidatos ICE y de gestionar los recibidos del otro par.
-
 \end{itemize}
 
 
-También debemos indicarle los servidores STUN y TURN a los que conectarse para averiguar los pares de ip y puerto para los Candidatos ICE:\\
+También debemos indicarle los servidores STUN y TURN a los que conectarse para averiguar los pares de IP y puerto para los Candidatos ICE:\\
 
 \begin{lstlisting}[caption=Servidores STUN y TURN]
-
 var ICE_config = {
   'iceServers': [
     {
@@ -492,7 +485,6 @@ var ICE_config = {
     }
   ]
 };
-
 \end{lstlisting}
 
 Una vez tenemos las variables configuradas, la forma en la que creamos la conexión WebRTC es la siguiente:\\
@@ -500,18 +492,16 @@ Una vez tenemos las variables configuradas, la forma en la que creamos la conexi
 \begin{lstlisting}[caption=RTCPeerConnection.]
 
 var PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
-
 \end{lstlisting}
 
-Esta función admite dos argumentos. El primero es la configuración ice que acabamos de ver y el segundo es una variable con las restricciones de todas las funcionalidades y configuraciones que tiene \emph{RTCPeerConnection}. En nuestro caso esa variable está vacía ya que la configuración por defecto es más que adecuada para nuestros intereses.\\
+Esta función admite dos argumentos. El primero es la configuración ICE que acabamos de ver y el segundo es una variable con las restricciones de todas las funcionalidades y configuraciones que tiene \emph{RTCPeerConnection}. En nuestro caso esa variable está vacía ya que la configuración por defecto es más que adecuada para nuestros intereses.\\
 
 Para el intercambio de paquetes en la señalización es necesario crear los manejadores que \emph{RTCPeerConnection} necesita para los SDP y para los Candidatos ICE. El par local tiene sus manejadores ya que es el encargado de llevar la batuta de la conexión, y el par remoto tiene otros manejadores diferentes. \\
 
-Los SDP se manejan en el par local con el método \emph{createOffer} que al ser llamado activa el proceso de crear la oferta SDP. Cada vez que crea uno nuevo salta un evento en la función que se le ha indicado, llamada \emph{gotLocalDescription}. Esta función se encarga de ajustar el SDP local al SDP que se acaba de crear y de mandárselo al otro par a través del servidor de señalización. Si al crear un SDP se produce un error se llama a la función de error, la cual se encargara de notificárnoslo en la consola del navegador.\\
+Los SDP se manejan en el par local con el método \emph{createOffer} que al ser llamado activa el proceso de crear la oferta SDP. Cada vez que crea uno nuevo salta un evento en la función que se le ha indicado, llamada \emph{gotLocalDescription}. Esta función se encarga de ajustar el SDP local al SDP que se acaba de crear y de mandárselo al otro par a través del servidor de señalización. Si al crear un SDP se produce un error se llama a la función de error, la cual se encargará de notificarlo en la consola del navegador.\\
 
 
 \begin{lstlisting}[caption={Manejador de los SDP.}, label={lst:manejadorsdp}]
-
 // Funcion de exito
 function gotLocalDescription(sessionDescription){
   PeerConnection.setLocalDescription(sessionDescription, successLocalSDP, errorLocalSDP);
@@ -525,7 +515,6 @@ function onSignalingError(error){
 
 // Metodo manejador de las SDP
 PeerConnection.createOffer(gotLocalDescription, onSignalingError);
-
 \end{lstlisting}
 
 Esta oferta es recibida en el par remoto a través del servidor de señalización y se guarda como la oferta del otro par, ya que la necesitaremos para conocer las características del flujo audiovisual que nos llegará:\\
@@ -547,7 +536,6 @@ Las funciones de éxito y error \emph{gotLocalDescription} y \emph{onSignalingEr
 Para manejar los Candidatos ICE utilizamos el método manejador \emph{onicecandidate}, el cuál llama a la función indicada, \emph{handleIceCandidate()} en nuestro caso, en el momento en que se encuentra un Candidato ICE. Esta función se encarga de enviar el candidato a través del servidor de señalización. Ambos pares usan este mismo evento con la misma configuración en la detección y envío de candidatos ICE.\\
 
 \begin{lstlisting}[caption=Manejador de los Candidatos ICE locales.]
-
 function handleIceCandidate(event){
   //console.log('handleIceCandidate event: ', event);
   if (event.candidate) {
@@ -565,7 +553,6 @@ function handleIceCandidate(event){
 
 // Metodo manejador de candidatos ICE
 PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
-
 \end{lstlisting}
 
 Los candidatos son recibidos en ambos pares a través del servidor de señalización. Se crea el candidato y se le añade como candidato remoto con el método \emph{addIceCandidate}.\\
@@ -582,10 +569,9 @@ Uno de los puntos mas importantes para el proyecto que se tiene que encargar \em
 PeerConnection.addStream(localStream); 
 \end{lstlisting}
 
-Y en el par remoto con un método manejador llamado \emph{onaddstream}, que en el momento en el que salta el evento llama a la función \emph{handleRemoteStreamAdded}, y esta se encarga de configurar el flujo en una etiqueta vídeo de HTML5.\\
+Y en el par remoto con un método manejador llamado \emph{onaddstream}, que en el momento en el que salta el evento llama a la función \emph{handleRemoteStreamAdded}, y ésta se encarga de configurar el flujo en una etiqueta vídeo de HTML5.\\
 
 \begin{lstlisting}[caption=Manejador del flujo audiovisual en el par remoto.]
-
 // Funcion manejadora
 function handleRemoteStreamAdded(event) {
 
@@ -609,9 +595,9 @@ Una vez creada y establecida la conexión \emph{RTCPeerConnection} la usaremos p
 
 \subsection{RTCDataChannel}
 
-\emph{RTCDataChannel} nos permite transferir cualquier tipo de dato u objeto entre los pares a través de la comunicación creada por \emph{RTCPeerConnection}. Hemos usado esta API para transferir tanto los datos obtenidos de los sensores del drone como las órdenes de movimiento dadas.\\
+\emph{RTCDataChannel} nos permite transferir cualquier tipo de dato u objeto entre los pares a través de la comunicación creada por \emph{RTCPeerConnection}. Hemos usado esta API para transferir tanto los datos obtenidos de los sensores del drone (del navegador local al navegador remoto) como las órdenes de movimiento dadas (deo navegador remoto al navegador local).\\
 
-Para crear esta conexión basta con llamar al método \emph{createDataChannel()} de \emph{RTCPeerConnection} en el par local ya que es quien ha establecido la conexión. Este método admite dos argumentos, el primero es el nombre que le damos a esta conexión y el segundo es un objeto en el que se especifica la configuración de las propiedades disponibles. La única propiedad que se ha configurado distinta de las que viene por defecto es la entrega ordenada de paquetes, estableciéndolo en falso, ya que de esta manera introduce menos retraso a la comunicación, eliminando cuellos de botella ya que el medio en el que se transfieren los paquetes no es ruidoso ni tiene condiciones extremas para que se produzcan demasiadas pérdidas de paquetes.\\
+Para crear esta conexión basta con llamar al método \emph{createDataChannel()} de \emph{RTCPeerConnection} en el par local ya que es quien arranca la conexión. Este método admite dos argumentos, el primero es el nombre que le damos a esta conexión y el segundo es un objeto en el que se especifica la configuración de las propiedades disponibles. La única propiedad que se ha configurado distinta de las que vienen por defecto es la entrega ordenada de paquetes, estableciéndolo en falso, ya que de esta manera introduce menos retraso a la comunicación, eliminando cuellos de botella ya que el medio en el que se transfieren los paquetes no es ruidoso ni tiene condiciones extremas para que se produzcan demasiadas pérdidas de paquetes.\\
 
 \begin{lstlisting}[caption=Establecimiento conexión RTCDataChannel en el par local.]
 // Creacion de la comunicacion dataChannel
@@ -622,9 +608,9 @@ dataChannel.onerror = function (error) {
   console.log("Data Channel Error:", error);
 };\end{lstlisting}
 
-Si en el momento de crear la conexión ocurre un error salta un evento en el método \emph{onerror} que nos comunica a través de la terminal el error que se ha producido.\\
+Si en el momento de crear la conexión ocurre un error salta un evento en el método \emph{onerror} que nos comunica a través de la terminal el error concreto que se ha producido.\\
 
-Para el control de la comunicación RTCDataChannel utiliza tres métodos para gestionar la conexión. Por un lado los métodos de inicio y final de la conexión, y el método que maneja los mensajes recibidos.\\
+Para el control de la comunicación RTCDataChannel utiliza tres métodos para gestionar la conexión. Por un lado los métodos de inicio y final de la conexión creada, y el método que maneja los mensajes recibidos.\\
 
 \begin{lstlisting}[caption={Manejadores de RTCdataChannel.}, label={lst:manejadoresdatachannel}]
 function handleReceiveChannelStateChange() {
@@ -640,7 +626,7 @@ dataChannel.onclose = handleReceiveChannelStateChange;
 dataChannel.onmessage = handleMessage;
 };\end{lstlisting}
 
-La función \emph{handleMessage} es la encargada de manejar los mensajes recibidos, pero hablaremos más en profundidad de ella en la sección \ref{subsec:ordenes}.\\
+La función \emph{handleMessage} es la encargada de manejar los mensajes recibidos, pero hablaremos en profundidad de ella más adelante.\\
 
 En el par remoto para establecer la conexión RTCDataChannel hemos configurado el método \emph{ondatachannel}. Este método se encarga de unirse a la comunicación creada por el par local con las mismas propiedades y configuraciones que se le han indicado. Cuando se activa este método llama a la función \emph{gotReceiveChannel} que es la encargada de manejar  la conexión. Esta función se encarga de configurar la conexión en la variable local, y de establecer en los métodos de apertura y cierre de la comunicación las funciones manejadoras. Las función manejadora \emph{handleSendChannelStateChange} es la misma que la mostrada en el listado \ref{lst:manejadoresdatachannel}.\\
 
@@ -661,7 +647,7 @@ Una vez establecida la comunicación de datos \emph{RTCDataChannel} podemos envi
 
 \subsubsection{Sensores de navegación}
 
-Los datos de los sensores los recogemos en el par local. Llamamos a una función del método ArDrone, explicado en la sección \ref{subsec:ardrone}, que a su vez llama a las funciones que se conectan directamente con las interfaces para recoger los datos. Esta llamada la hacemos de manera periódica con una función \emph{setinterval()} de JavaScript.\\
+Los datos de los sensores los recogemos en el par local. Llamamos a una función del método ArDrone, explicado en la sección \ref{subsec:ardrone}, que a su vez llama a las funciones que se conectan directamente con las interfaces ICE de \texttt{ardrone\_server} para recoger los datos. Esta llamada la hacemos de manera periódica con una función \emph{setinterval()} de JavaScript.\\
 
 \begin{lstlisting}[caption=Intervalo actualización y envío de datos de los sensores.]
 intervalo = setInterval(arDrone.updateAndSend, 15);
@@ -677,7 +663,7 @@ function sendNavigationData(pose, navdata) {
 }
 };\end{lstlisting}
 
-Para enviar los datos primero creamos un objeto JavaScript, en el que introducimos los objetos \emph{Pose} y \emph{Navdata}. Este objeto lo transformamos a un objeto JSON\footnote{http://www.json.org} para enviarlo por el canal de datos \emph{RTCDataChannel}.\\
+Para enviar los datos al navegador remoto primero creamos un objeto JavaScript, en el que introducimos los objetos \emph{Pose} y \emph{Navdata}. Este objeto lo transformamos a un objeto JSON\footnote{http://www.json.org} para enviarlo por el canal de datos \emph{RTCDataChannel}.\\
 
 Los datos llegan al par remoto en forma de evento a la función \emph{handleMessage()}.\\
 
@@ -689,16 +675,16 @@ function handleMessage(event) {
 }
 \end{lstlisting}
 
-Esta función se encarga de reconvertir el objeto JSON recibido a objeto JavaScript, y posteriormente guardamos los objetos pose y navdata para su posterior representación en pantalla. Estos datos los visualizaremos en unos relojes de navegación, los cuáles estudiaremos con más detalle en la sección \ref{subsec:relojesnavegacion}.\\
+Esta función se encarga de reconvertir el objeto JSON recibido a objeto JavaScript, y posteriormente guardamos los objetos \emph{pose} y \emph{navdatas} para su posterior representación en pantalla. Estos datos los visualizaremos en unos relojes de navegación, los cuáles estudiaremos con más detalle en la sección \ref{subsec:relojesnavegacion}.\\
 
 
-\subsubsection{Órdenes}\label{subsec:ordenes}
+\subsubsection{Órdenes de movimiento}\label{subsec:ordenes}
 
-El par remoto es el encargado de transferir las órdenes dadas por el usuario al par local, y este a su vez al drone. El usuario tiene distintas maneras de introducir o hacer saber al equipo las órdenes que quiere dar. Una de ellas es a través de unos \emph{joysticks} multidispositivo situados en las esquinas inferiores de la pantalla, y la otra mediante un mando conectado por USB al ordenador.\\
+El par remoto es el encargado de transferir las órdenes dadas por el usuario al par local, y éste a su vez al drone. El usuario tiene distintas maneras de introducir o hacer saber al equipo las órdenes que quiere dar. Una de ellas es a través de unos \emph{joysticks} multidispositivo situados en las esquinas inferiores de la pantalla, y la otra mediante un mando conectado por USB al ordenador.\\
 
-En la sección \ref{subsec:joysticks} se analizará en profundidad ambos, mientras que en esta sección nos centraremos en el intercambio de los datos.\\
+En la sección \ref{subsec:joysticks} se analizarán en profundidad ambos, mientras que en esta sección nos centraremos en el intercambio de los datos.\\
 
-La forma en la que hemos diseñado la interfaz hace que tengamos dos joysticks, uno de ellos controla la dirección y velocidad del drone, y el otro controla la altitud y el giro del drone. A parte de esto tenemos otro tipo de órdenes, estas son las llamadas especiales, que son la orden de despegue y la orden de aterrizaje. Por este motivo se han creado tres tipos de funciones de envío:\\
+La forma en la que hemos diseñado la interfaz hace que tengamos dos joysticks, uno de ellos controla la dirección y velocidad del drone, y el otro controla la altitud y el giro del drone. A parte de esto tenemos otro tipo de órdenes, las llamadas especiales, que son la orden de despegue y la orden de aterrizaje. Por este motivo se han creado tres tipos de funciones de envío:\\
 
 \begin{lstlisting}[caption=Funciones de envío de órdenes en el par remoto.]
 function enviarOrden(d){
@@ -758,17 +744,19 @@ function handleMessage(event) {
 \end{lstlisting}
 
 
-La función manejadora se encarga de discernir que tipo de dato ha llegado y llamar a la función correspondiente del módulo ArDrone.\\
+La función manejadora se encarga de discernir qué tipo de dato ha llegado y llamar a la función correspondiente del módulo ArDrone.\\
 
 En este punto tenemos toda la comunicación de datos entre pares terminada, por lo que procedemos a explicar el desarrollo de la interfaz web de usuario.\\
 
-\section{Interfaz web de usuario}
+\section{Interfaz web de usuario en cliente remoto}
 
-El diseño de la interfaz lo se ha diseñado con tecnologías web de ultima generación que nos permite teleoperar el drone de una forma fácil, sencilla e intuitiva.\\
+El diseño de la interfaz se ha diseñado con tecnologías web de ultima generación que nos permiten teleoperar el drone de una forma fácil, sencilla e intuitiva.\\
+
+Esta interfaz está compuesta principalmente por cuatro ingredientes: la visualización del vídeo recibido del navegador remoto a pantalla completa, unos \emph{joysticks} virtuales para el manejo del drone complementados con un mando físico, unos relojes de navegación que nos representarán los datos recibidos de los sensores del drone y una visualización espacial en 3D del drone.\\
 
 \subsection{Visualización del vídeo}
 
-Para teleoperar el drone de una manera efectiva necesitamos poder visualizar el vídeo que recibimos de la cámara de la mejor manera posible. Hemos optado por visualizarlo a pantalla completa en el navegador, por debajo del resto de elementos que tendremos en la pantalla.\\
+Para teleoperar el drone de una manera efectiva necesitamos poder visualizar el vídeo que recibimos de la cámara de la mejor manera posible. Hemos optado por visualizarlo a pantalla completa en el navegador, por debajo del resto de elementos que tendremos en la pantalla. Este tipo de representación es especialmente útil cuándo se ejecuta en un teléfono móvil o en una tableta.\\
 
 Para situar el vídeo a pantalla completa primero necesitamos definir en la hoja de estilos o \emph{CSS} el cuerpo de la página con margen cero, y posteriormente situar el vídeo en el centro de la pantalla y con tamaño 100\%. Para el tiempo que transcurre entre que se inicia el período de señalización hasta que recibimos el vídeo se establece una imagen de fondo\\
 
@@ -794,11 +782,13 @@ video#droneVideo {
 }
 \end{lstlisting}
 
+En la figura \ref{fig:interfazweb} se puede observar el vídeo procedente de la cámara mostrándose de fondo por debajo del resto de elementos de la interfaz.\\
+
 \subsection{Joysticks y Gamepad}\label{subsec:joysticks}
 
 Para que el usuario controle el drone hemos optado por desarrollar dos opciones. La primera opción es a través de unos \emph{joysticks} situados en la pantalla, los cuáles son multidispositivo, ya que se pueden usar en un ordenador con el puntero del ratón y en dispositivos táctiles con los dedos. Por otro lado, también puede ser controlado con un mando USB conectado en el ordenador.\\
 
-\subsubsection{Joysticks}
+\subsubsection{Joysticks virtuales}
 
 Los joystick han sido desarrollados como un canvas de HTML5 en el que dibujamos un círculo y un aro exterior.\\
 
@@ -820,9 +810,17 @@ function dibujarCirculo(x, y, r) {
 \end{lstlisting}
 
 
-El aro exterior es un elemento fijo, es decir no se mueve y lo utilizamos como "tope" para el círculo interior. El círculo es móvil según los movimientos del usuario.\\
+El aro exterior es un elemento fijo, es decir no se mueve y lo utilizamos como "tope" para el círculo interior. El círculo es móvil según los movimientos del usuario. En la figura \ref{fig:joysticks} podemos ver la apariencia final de los dos \emph{joysticks}.\\
 
-Para dotar a éste círculo de movimiento hemos utilizado los eventos de JavaScript \emph{mousedown}, \emph{mousemove}, \emph{mouseup} y \emph{mouseout}. El primer evento se ejecuta cuándo el usuario hace \emph{click} con el ratón. Dentro de este evento nos encargamos de detectar si ese \emph{click} ha sido en el círculo que hemos dibujado. El segundo evento ocurre cuándo, sin soltar el ratón, el usuario lo mueve. Si en el primer evento hemos detectado que ha \emph{clickado} sobre el círculo, se re-dibuja por la zona dónde está moviendo el ratón. Con el evento \emph{mouseup}, al deshacer el click, re-dibujamos el círculo a su posición inicial. El evento \emph{mouseout} detecta si el ratón se ha salido del aro y también devuelve el \emph{joystick} a su posición inicial.\\
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{joysticks}
+\caption{Joysticks.}
+\label{fig:joysticks}
+\end{figure}
+
+
+Para dotar a éste círculo de movimiento hemos utilizado los eventos de JavaScript \emph{mousedown}, \emph{mousemove}, \emph{mouseup} y \emph{mouseout}. El primer evento se ejecuta cuando el usuario hace \emph{click} con el ratón. Dentro de este evento nos encargamos de detectar si ese \emph{click} ha sido en el círculo que hemos dibujado. El segundo evento ocurre cuando, sin soltar el ratón, el usuario lo mueve. Si en el primer evento hemos detectado que ha \emph{clickado} sobre el círculo, se re-dibuja por la zona donde está moviendo el ratón. Con el evento \emph{mouseup}, al deshacer el click, re-dibujamos el círculo a su posición inicial. El evento \emph{mouseout} detecta si el ratón se ha salido del aro y también devuelve el \emph{joystick} a su posición inicial.\\
 
 \begin{lstlisting}[caption=Movimiento y control del joystick.]
 canvas.addEventListener('mousedown', function(evt) {
@@ -882,19 +880,11 @@ Dentro del evento \emph{mousemove} también recogemos la posición en la que se 
 
 Para dotar a los joysticks de funcionalidades táctiles hemos desarrollado las mismas funciones que las anteriores con los eventos táctiles equivalentes: \emph{touchstart}, \emph{touchmove}, \emph{touchend}, \emph{touchup}.\\
 
-La figura \ref{fig:joysticks} muestra los dos joysticks antes de ser situados en su posición en la pantalla.\\
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.6\textwidth]{joysticks}
-\caption{Joysticks.}
-\label{fig:joysticks}
-\end{figure}
-
+Estos joysticks se han situado en las esquinas inferiores de la pantalla como se puede observar en la figura \ref{fig:interfazweb} para facilitar el manejo con dispositivos táctiles.\\
 
 \subsubsection{Gamepad}
 
-También se ha desarrollado la posibilidad de teleoperar el drone mediante un mando USB conectado al ordenador. La API \emph{Gamepad} de JavaScript no esta estabilizada, hay navegadores que no la soportan y no todos los mandos funcionan de la misma manera. El mando con el que se ha desarrollado es el \emph{Xbox} de la empresa \emph{Microsoft}, no se han realizado pruebas con mandos de otros fabricantes por lo que no se puede asegurar su correcto funcionamiento. \\
+También se ha desarrollado la posibilidad de teleoperar el drone mediante un mando USB conectado al ordenador. La API \emph{Gamepad} de JavaScript no está estabilizada, hay navegadores que no la soportan y no todos los mandos funcionan de la misma manera. El mando con el que se ha desarrollado es el \emph{Xbox} de la empresa \emph{Microsoft}, no se han realizado pruebas con mandos de otros fabricantes por lo que no se puede asegurar su correcto funcionamiento. \\
 
 Para la detección del mando al ser conectado al puerto USB hemos usado los eventos que nos da la API \emph{Gamepad}. Al conectar el mando se ejecuta el evento \emph{gamepadconnected} que llama a la función manejadora \emph{connecthandler}.\\
 
@@ -910,7 +900,7 @@ window.addEventListener("gamepadconnected", connecthandler);
 window.addEventListener("gamepaddisconnected", disconnecthandler);
 \end{lstlisting}
 
-La función \emph{connecthandler()} guarda en una variable el mando conectado y crea un intervalo que llama periódicamente a la función que detectará los movimientos de los botones. Por otro lado se encarga de ocultar los \emph{joysticks}, los cuales volveremos a mostrar si se desconecta el mando.\\
+La función \emph{connecthandler()} guarda en una variable el mando conectado y crea un intervalo que llama periódicamente a la función que detectará los movimientos de los botones. Por otro lado se encarga de ocultar los \emph{joysticks} virtuales, los cuales volveremos a mostrar si se desconecta el mando.\\
 
 Dentro de la función \emph{updateGamePad()} detectamos el movimiento de los dos \emph{joysticks} del mando. y la pulsación de los botones. Hemos configurado la pulsación de una tecla para el despegue y otra para el aterrizaje, y con los \emph{joysticks} controlamos el vuelo de igual manera que con los \emph{joysticks} virtuales.\\
 
@@ -999,7 +989,7 @@ this.updatePanelControl =  function(navdata, pose){
 }
 \end{lstlisting}
 
-La situación en la pantalla de estos relojes es de gran importancia. Para no ocultar la visión de la cámara y tenerlos visibles se ha decido colocarlos por pares en las esquinas superiores de la pantalla. Además, se les ha dotado de la propiedad \emph{draggable} de jQuery la cuál nos permite arrastrarlos por la pantalla y situarlos dónde mas cómodo le sea al usuario.\\
+La situación en la pantalla de estos relojes es de gran importancia. Para no ocultar la visión de la cámara y tenerlos visibles se ha decido colocarlos por pares en las esquinas superiores de la pantalla. Además, se les ha dotado de la propiedad \emph{draggable} de jQuery la cuál nos permite arrastrarlos por la pantalla y situarlos dónde más cómodo le sea al usuario.\\
 
 \begin{lstlisting}[caption=Elementos arrastrables.]
 $(function() {
@@ -1010,7 +1000,7 @@ $(function() {
 });
 \end{lstlisting}
 
-En la figura \ref{fig:relojesnavegacion} podemos observar los cuatro relojes incorporados a la interfaz web de usuario.\\
+En la figura \ref{fig:relojesnavegacion} podemos observar los cuatro relojes incorporados a la interfaz web de usuario. En la figura \ref{fig:interfazweb} se pueden también observar integrados con el resto de elementos que componen la interfaz.\\
 
 \begin{figure}[h!]
 \centering
@@ -1019,11 +1009,9 @@ En la figura \ref{fig:relojesnavegacion} podemos observar los cuatro relojes inc
 \label{fig:relojesnavegacion}
 \end{figure}
 
-\subsection{Localización espacial del drone}
+\subsection{Visualización espacial 3D del drone}
 
-Para días de niebla o condiciones extremas es imprescindible tener localizada la posición del drone para poder traerlo de vuelta. Utilizando los datos del GPS del drone hemos creado un mapa 3D con la situación del drone en tiempo real. Para desarrollar este mapa nos hemos ayudado de la librería \emph{Three.js}\footnote{http://threejs.org} la cuál nos facilita el acceso y uso de WebGL.\\
-
-El mapa es dibujado sobre una etiqueta \texttt{<canvas>}, y está compuesto principalmente por una escena, una cámara en esa escena, el suelo y el drone.\\
+Para días de niebla o condiciones extremas es imprescindible tener localizada la posición del drone para poder traerlo de vuelta. Utilizando los datos del GPS del drone hemos creado un marco 3D con la situación del drone en tiempo real. Para desarrollar este visualizador 3D nos hemos ayudado de la librería \emph{Three.js}\footnote{http://threejs.org} la cuál nos facilita el acceso y uso de WebGL. El mapa 3D es dibujado sobre una etiqueta \texttt{<canvas>}, y está compuesto principalmente por una escena, una cámara de observación en esa escena (desde ella se ve la escena), el suelo y el drone.\\
 
 Lo primero que hemos hecho ha sido crear la escena y situar la cámara en la misma.\\
 
@@ -1038,9 +1026,9 @@ camera.position.set( 18,20, 18 );
 camera.lookAt( new THREE.Vector3( 0, 0, 0 )  );
 \end{lstlisting}
 
-La cámara se ha decidido que esté fija apuntando a la posición inicial del drone, ya que de esta manera es mas sencillo conocer la posición del drone y devolverlo al origen si fuese necesario.\\
+La cámara se ha decidido que esté fija apuntando a la posición inicial del drone, ya que de esta manera es más sencillo conocer la posición del drone y devolverlo al origen si fuese necesario.\\
 
-Posteriormente añadimos la superficie que representa el suelo.\\
+Posteriormente añadimos la superficie que representa el suelo con una rejilla de celdas de 1m$^{2}$.\\
 
 \begin{lstlisting}[caption=Superficie que representa el suelo del mapa.]
 // Suelo. 
@@ -1055,7 +1043,7 @@ plane.receiveShadow = true;
 scene.add( plane );
 \end{lstlisting}
 
-Three.js admite archivos en formato COLLADA \emph{(COLLAborative Design Activity)}. Hemos reutilizado los archivos Collada que utiliza el simulador gazebo para representar de igual manera el drone. Cargamos el objeto collada, establecemos su posición inicial en el mapa y su tamaño de la siguiente manera:\\
+Three.js admite archivos en formato COLLADA \emph{(COLLAborative Design Activity)}. Hemos reutilizado los archivos Collada que utiliza el simulador Gazebo para representar de igual manera el drone. Cargamos el objeto collada del cuadricóptero, establecemos su posición inicial en el mapa y su tamaño de la siguiente manera:\\
 
 \begin{lstlisting}[caption=Carga del objeto collada.]
 var loader = new THREE.ColladaLoader();
@@ -1109,7 +1097,7 @@ Para liberar al navegador de un \emph{setInterval()}, se aprovecha el 'intervalo
 \end{figure}
 
 
-Además se le ha añadido dos funcionalidades más a la interfaz web. Por un lado se ha añadido un indicador de nivel de batería creado en HTML5 y CSS3. Esta batería está desarrollada por Jon Kantner\footnote{http://codepen.io/jkantner/}\cite{bateria} y adaptada para nuestro proyecto. Por otro lado se ha añadido un control de velocidad del drone, para facilitar su manejo si las condiciones son extremas o si se está realizando un vuelo en interiores. Este control está también desarrollado con HTML5 y CSS3. Estos dos elementos están situados en la parte central superior de la pantalla como se puede ver en la figura \ref{fig:bateriayvelocidad}.\\
+Además se le han añadido dos funcionalidades más a la interfaz web. Por un lado se ha añadido un indicador de nivel de batería, creado en HTML5 y CSS3. Esta batería está desarrollada por Jon Kantner\footnote{http://codepen.io/jkantner/}\cite{bateria} y la hemos adaptado para nuestro proyecto. Por otro lado, se ha añadido un control de velocidad del drone, para facilitar su manejo si las condiciones son extremas o si se está realizando un vuelo en interiores. Este control está también desarrollado con HTML5 y CSS3 y fijan la velocidad máxima ordenable con los \emph{joysticks} visuales y el mando. Estos dos elementos están situados en la parte central superior de la pantalla como se puede ver en la figura \ref{fig:bateriayvelocidad}.\\
 
 \begin{figure}[h!]
 \centering
@@ -1126,7 +1114,7 @@ Además se le ha añadido dos funcionalidades más a la interfaz web. Por un lad
 \end{figure}
 
 
-El resultado final de la interfaz web de usuario se puede ver en la figura \ref{fig:interfazweb}.
+El resultado final de la interfaz web de usuario con todos los elementos integrados se puede ver en la figura \ref{fig:interfazweb}.
 
 
 \begin{figure}[h!]
