@@ -54,16 +54,17 @@
 \begin{minipage}[t]{0.5\textwidth}
 \begin{center}
 \begin{figure}
-\includegraphics[width=0.6\textwidth]{img/amazon}
-\includegraphics[width=0.6\textwidth]{img/hemav1}
+\includegraphics[width=0.7\textwidth]{img/dronefilm}
+\includegraphics[width=0.7\textwidth]{img/dronendesa}
 \end{figure}
 \end{center}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{center}
 \begin{figure}
-\includegraphics[width=0.8\textwidth]{img/dronefilm}
-\includegraphics[width=0.8\textwidth]{img/socorrista}
+\includegraphics[width=0.7\textwidth]{img/socorrista}
+\includegraphics[width=0.7\textwidth]{img/amazon}
+
 \end{figure}
 \end{center}
 \end{minipage}
@@ -219,30 +220,58 @@ Sub-objetivos:
 
 \begin{hslide}
 \slsubsect{Conexión local}
+\begin{minipage}[t]{0.7\textwidth}
 \begin{itemize}
 \item Esta conexión se divide en dos a su vez:
 \begin{itemize}
-\item \textbf{ArDroneServer y WebSockets:} Conexión que se establece entre el navegador y el drone.
+\item \textbf{ArDroneServer y WebSockets:} Conexión que se establece entre el navegador y el drone. Se establecen conexiones con cuatro interfaces ICE.
 \item \textbf{getUserMedia:} El navegador accede a la cámara utilizando la API de WebRTC.
 \end{itemize}
 \end{itemize}
+
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{img/conexionlocal}
+\end{figure}
+\end{center}
+\end{minipage}
 \end{hslide}
+
 
 %%--------------------------------------------------------------
 
 \begin{hslide}
 \slsubsect{Conexión local: ArDroneServer y WebSockets}
 \begin{itemize}
-\item Para establecer la conexión hay que activar los WebSockets de ICEJS en el archivo de configuración del servidor ArDroneServer.
+\item Para establecer la conexión se han activado los WebSockets de ICEJS en el archivo de configuración del servidor ArDroneServer.
 \end{itemize}
 \lstset{}
 \begin{lstlisting}
  Ice.Plugin.IceWS=IceWS:createIceWS
 \end{lstlisting}
+\begin{itemize}
+\item En el lado cliente se ha desarrollado la conexión con promesas de JavaScript.
+\end{itemize}
+
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{img/promiseconexionlocal}
+\end{figure}
+\end{center}
 \end{hslide}
 
 %%--------------------------------------------------------------
 
+\begin{hslide}
+\slsubsect{Conexión local: getUserMedia}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{img/getusermedia}
+\end{figure}
+\end{center}
+\end{hslide}
 
 %%--------------------------------------------------------------
 
