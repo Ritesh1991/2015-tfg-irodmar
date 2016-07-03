@@ -64,7 +64,6 @@
 \begin{figure}
 \includegraphics[width=0.7\textwidth]{img/socorrista}
 \includegraphics[width=0.7\textwidth]{img/amazon}
-
 \end{figure}
 \end{center}
 \end{minipage}
@@ -268,19 +267,218 @@ Sub-objetivos:
 \slsubsect{Conexión local: getUserMedia}
 \begin{center}
 \begin{figure}
-\includegraphics[width=0.9\textwidth]{img/getusermedia}
+\includegraphics[width=1.1\textwidth]{img/getusermedia}
+\end{figure}
+\end{center}
+\end{hslide}
+
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsubsect{Conexión entre navegadores}
+\begin{minipage}[t]{0.6\textwidth}
+\begin{itemize}
+\item Necesidad de un servidor de señalización para establecer la conexión: Descubrimiento de pares e intercambio de SDP.
+\item Esta conexión tiene dos funciones principales.
+\begin{itemize}
+\item Transferir el flujo audiovisual de la cámara.
+\item Intercambio de datos: sensores, órdenes.
+\end{itemize}
+\end{itemize}
+
+\end{minipage}
+\begin{minipage}[t]{0.6\textwidth}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{img/conexionremota}
+\end{figure}
+\end{center}
+\end{minipage}
+
+\end{hslide}
+
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsubsect{Conexión entre navegadores: Servidor de señalización}
+\begin{itemize}
+\item Escrito en Node.js
+\item Encargado del intercambio de paquetes entre los pares con los descriptores de sesión y los candidatos ICE.
+\item Se ha utilizado la librería \emph{Socket.io} para el intercambio de paquetes a través de \emph{WebSockets} entre los navegadores.
+\item Desarrollado para satisfacer la arquitectura JSEP.
+\end{itemize}
+\end{hslide}
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsubsect{Conexión entre navegadores: Transmisión de vídeo con RTCPeerConnection}
+\begin{itemize}
+\item Esta conexión se establece con la API \emph{RTCPeerConnection} de WebRTC.
+\end{itemize}
+\lstset{}
+\begin{lstlisting}
+var PC=new RTCPeerConnection(ICE_config,pc_constraints);
+\end{lstlisting}
+
+\begin{itemize}
+\item El flujo obtenido con \emph{getUserMedia} se envía desde el par local al remoto a través de esta conexión.
+\end{itemize}
+\lstset{}
+\begin{lstlisting}
+ PeerConnection.addStream(localStream);
+\end{lstlisting}
+\end{hslide}
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsubsect{Conexión entre navegadores: Transmisión de datos con RTCDataChannel}
+\begin{itemize}
+\item La API \emph{RTCDataChannel} de WebRTC nos permite transferir cualquier tipo de dato a través de \emph{RTCPeerConnection}.
+\end{itemize}
+\lstset{}
+\begin{lstlisting}
+DC=PC.createDataChannel("droneDataChannel",{ordered:false});
+\end{lstlisting}
+
+\begin{itemize}
+\item Transfiere desde el navegador local al navegador remoto los datos de los sensores del drone.
+\item Desde el par remoto al par local transfiere las órdenes de movimiento dadas por el usuario final.
+\end{itemize}
+\end{hslide}
+
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsubsect{Conexión entre navegadores: Interfaz web de usuario en cliente remoto}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{img/interfazweb}
 \end{figure}
 \end{center}
 \end{hslide}
 
 %%--------------------------------------------------------------
 
+\begin{hslide}
+\slsect{Experimentos}
+\slsubsect{Experimento con el simulador Gazebo}
+\begin{itemize}
+\item Realización de los experimentos de forma progresiva que validen que se han cumplido los objetivos.
+\item Primero se realizaron pruebas en el entorno virtual Gazebo para depurar el código.
+\end{itemize}
+
+\begin{minipage}[t]{0.3\textwidth}
+\includegraphics[width=\textwidth]{img/experimentogazebo}
+\end{minipage}
+\begin{minipage}[t]{0.7\textwidth}
+\includegraphics[width=\textwidth]{img/experimento1}
+\end{minipage}
+\end{hslide}
 
 %%--------------------------------------------------------------
 
+\begin{hslide}
+\slsubsect{Experimento uno con drone real}
+\begin{itemize}
+\item El siguiente paso fue con el drone real sin poner a bordo el \emph{Computer Stick}.
+\end{itemize}
+
+\begin{minipage}[t]{0.3\textwidth}
+\includegraphics[width=\textwidth]{img/experimentodronereal1}
+\end{minipage}
+\begin{minipage}[t]{0.7\textwidth}
+\includegraphics[width=\textwidth]{img/esquema_experimento2}
+\end{minipage}
+
+\end{hslide}
 
 %%--------------------------------------------------------------
 
+\begin{hslide}
+\slsubsect{Experimento dos con drone real}
+\begin{itemize}
+\item Experimento con el \emph{Computer Stick} a bordo del drone. Este experimento es el que valida el desarrollo del proyecto.
+\item El resultado del experimento es fallido.
+\item El peso de la cámara con el \emph{Computer Stick} y la pila para alimentarlo supera la carga de peso máxima permitida por este drone.
+\end{itemize}
+\end{hslide}
 
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\begin{minipage}[t]{0.4\textwidth}
+\includegraphics[width=\textwidth]{img/elementos_abordo}
+\end{minipage}
+\begin{minipage}[t]{0.6\textwidth}
+\includegraphics[width=\textwidth]{img/esquema_experimento_abordo}
+\end{minipage}
+
+\begin{minipage}[t]{0.5\textwidth}
+\includegraphics[width=\textwidth]{img/experimento_abordo}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\includegraphics[width=\textwidth]{img/pruebas_experimento_abordo}
+\end{minipage}
+\end{hslide}
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsubsect{Experimentos con multidispositivo}
+\begin{itemize}
+\item Dos experimentos con configuraciones diferentes.
+\end{itemize}
+\begin{minipage}[t]{0.4\textwidth}
+\includegraphics[width=\textwidth]{img/experimentodronemultidispositivo1}
+\end{minipage}
+\begin{minipage}[t]{0.6\textwidth}
+\includegraphics[width=\textwidth]{img/esquema_experimento_multidispositivo_1}
+\end{minipage}
+
+\begin{minipage}[t]{0.4\textwidth}
+\includegraphics[width=\textwidth]{img/experimentodronemultidispositivo2}
+\end{minipage}
+\begin{minipage}[t]{0.6\textwidth}
+\includegraphics[width=\textwidth]{img/experimento_multidispositivo2}
+\end{minipage}
+
+\end{hslide}
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsect{Conclusiones}
+\begin{itemize}
+\item \textbf{Objetivo cumplido}: capacidad de teleoperar el drone con tecnologías web de última generación y sin necesidad de servidores intermedios.
+\item Conexiones en tiempo real
+\item Interfaz web amigable e intuitiva.
+\item Multitplataforma y multidispositivo.
+\item Todo lo desarrollado ha quedado validado con los experimentos.
+\end{itemize}
+\vspace{0.5cm}
+Líneas futuras:
+\begin{itemize}
+\item Teleoperar el drone con coordenadas que permitan tener autonomía.
+\item Integración en el repositorio oficial de JdeRobot.
+\end{itemize}
+\end{hslide}
+
+%%--------------------------------------------------------------
+
+\begin{hslide}
+\slsect{Enlaces}
+\begin{itemize}
+\item Mediawiki: \url{http://jderobot.org/Irodmar-tfg}
+\item Repositorio: 
+\begin{itemize}
+\item \url{https://github.com/RoboticsURJC-students/2015-tfg-irodmar}
+\end{itemize}
+\end{itemize}
+\end{hslide}
 
 \end{document}
