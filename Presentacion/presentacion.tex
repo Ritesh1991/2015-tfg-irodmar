@@ -75,8 +75,8 @@
 \begin{hslide}
 \slsubsect{Antecedentes: Surveillance 5.1}
 \begin{itemize}
-\item Es el TFG de Edgar Barrero.
-\item Está desarrollado con Ruby on Rails.
+\item TFG de Edgar Barrero.
+\item Desarrollado con Ruby on Rails.
 \item Un servidor web intermedio se conecta a los servidores ICE.
 \end{itemize}
 \begin{minipage}[t]{0.3\textwidth}
@@ -94,8 +94,8 @@
 \begin{hslide}
 \slsubsect{Antecedentes: Teleoperadores y visores Web en JdeRobot}
 \begin{itemize}
-\item Es el TFG de Aitor Martínez.
-\item Está desarrollado directamente en el navegador con JavaScript.
+\item TFG de Aitor Martínez.
+\item Desarrollado directamente en el navegador con JavaScript.
 \item Conexión con sensores y actuadores sin servidores intermedios.
 \end{itemize}
 \begin{center}
@@ -109,7 +109,7 @@
 
 \begin{hslide}
 \slsect{Objetivo}
-Teleoperar un drone con tecnologías web de última generación
+Teleoperar un drone con tecnologías web de última generación (WebRTC)
 sin servidores intermedios desde multidispositivos.
 
 Sub-objetivos:
@@ -124,52 +124,24 @@ Sub-objetivos:
 
 \begin{hslide}
 \slsect{Infraestructura software}
-\slsubsect{ArDrone de Parrot}
-\begin{itemize}
-\item Drone sobre el que se basa el proyecto.
-\item Se ha usado la versión ArDrone 2.0. 
-\end{itemize}
-
-\begin{center}
-\begin{figure}
-\includegraphics[width=0.6\textwidth]{img/ardrone}
-\end{figure}
-\end{center}
-\end{hslide}
-
-%%--------------------------------------------------------------
-
-\begin{hslide}
-\slsubsect{Gazebo e ICE}
-\begin{itemize}
-\item \textbf{Gazebo}: Simula sensores, actuadores, etc del ArDrone en un mundo virtual.
-\item \textbf{ICE}: Permite comunicaciones \textit{cross-language} y \textit{cross-platform}.
-\end{itemize}
-
-\begin{center}
-\begin{figure}
-\includegraphics[width=0.6\textwidth]{img/gazebo}
-\end{figure}
-\end{center}
-\end{hslide}
-
-
-%%--------------------------------------------------------------
-
-\begin{hslide}
-\slsubsect{JdeRobot}
 \begin{minipage}[t]{0.7\textwidth}
 \begin{itemize}
-\item Simplifica el acceso a unidades hardware.
-\item Se han usado dos herramientas:
+\item ArDrone2.0 de Parrot: drone sobre el que se basa el proyecto.
+\item Simulador Gazebo: Simula sensores,actuadores... del ArDrone en un mundo virtual.
+\item ICE: \emph{Middleware} para conexiones entre lenguajes y entre plataformas.
+\item JdeRobot: Se han usado dos drivers:
 \begin{itemize}
-\item \emph{Plugin de Gazebo}: Versión virtual del drone ArDrone de Parrot.
-\item \emph{ArDroneServer}: Servidor que se comunica directamente con el drone.
+\item \emph{Plugin de Gazebo}: Versión virtual del drone.
+\item \emph{ArDroneServer}: Servidor del drone real.
 \end{itemize}
 \end{itemize}
-
 \end{minipage}
 \begin{minipage}[t]{0.3\textwidth}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{img/ardrone}
+\end{figure}
+\end{center}
 \begin{center}
 \begin{figure}
 \includegraphics[width=0.8\textwidth]{img/jderobot}
@@ -177,6 +149,9 @@ Sub-objetivos:
 \end{center}
 \end{minipage}
 \end{hslide}
+
+
+
 
 %%--------------------------------------------------------------
 
@@ -188,6 +163,11 @@ Sub-objetivos:
 \item Transmisión de audio, vídeo y datos.
 \item Sin necesidad de servidores intermedios.
 \end{itemize}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.7\textwidth]{img/webrtc}
+\end{figure}
+\end{center}
 \end{hslide}
 
 %%--------------------------------------------------------------
@@ -207,7 +187,7 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Flujo de llamada del proyecto}
+\slsubsect{Flujo de llamadas del proyecto}
 \begin{center}
 \begin{figure}
 \includegraphics[width=0.8\textwidth]{img/diagrama_general}
@@ -223,7 +203,7 @@ Sub-objetivos:
 \begin{itemize}
 \item Esta conexión se divide en dos a su vez:
 \begin{itemize}
-\item \textbf{ArDroneServer y WebSockets:} Conexión que se establece entre el navegador y el drone. Se establecen conexiones con cuatro interfaces ICE.
+\item \textbf{ArDroneServer y WebSockets:} Conexión entre el navegador y el drone. Cuatro interfaces ICE.
 \item \textbf{getUserMedia:} El navegador accede a la cámara utilizando la API de WebRTC.
 \end{itemize}
 \end{itemize}
@@ -280,7 +260,7 @@ Sub-objetivos:
 \begin{minipage}[t]{0.6\textwidth}
 \begin{itemize}
 \item Necesidad de un servidor de señalización para establecer la conexión: Descubrimiento de pares e intercambio de SDP.
-\item Esta conexión tiene dos funciones principales.
+\item Dos funciones principales.
 \begin{itemize}
 \item Transferir el flujo audiovisual de la cámara.
 \item Intercambio de datos: sensores, órdenes.
@@ -306,7 +286,7 @@ Sub-objetivos:
 \begin{itemize}
 \item Escrito en Node.js
 \item Encargado del intercambio de paquetes entre los pares con los descriptores de sesión y los candidatos ICE.
-\item Se ha utilizado la librería \emph{Socket.io} para el intercambio de paquetes a través de \emph{WebSockets} entre los navegadores.
+\item Utilización de librería \emph{Socket.io} para el intercambio de paquetes a través de \emph{WebSockets} entre los navegadores.
 \item Desarrollado para satisfacer la arquitectura JSEP.
 \end{itemize}
 \end{hslide}
@@ -337,7 +317,7 @@ var PC=new RTCPeerConnection(ICE_config,pc_constraints);
 \begin{hslide}
 \slsubsect{Conexión entre navegadores: Transmisión de datos con RTCDataChannel}
 \begin{itemize}
-\item La API \emph{RTCDataChannel} de WebRTC nos permite transferir cualquier tipo de dato a través de \emph{RTCPeerConnection}.
+\item \emph{RTCDataChannel} de WebRTC nos permite transferir cualquier tipo de dato a través de \emph{RTCPeerConnection}.
 \end{itemize}
 \lstset{}
 \begin{lstlisting}
@@ -346,7 +326,7 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 
 \begin{itemize}
 \item Transfiere desde el navegador local al navegador remoto los datos de los sensores del drone.
-\item Desde el par remoto al par local transfiere las órdenes de movimiento dadas por el usuario final.
+\item Desde el par remoto al par local se transfiere las órdenes de movimiento dadas por el usuario final.
 \end{itemize}
 \end{hslide}
 
@@ -369,7 +349,7 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 \slsubsect{Experimento con el simulador Gazebo}
 \begin{itemize}
 \item Realización de los experimentos de forma progresiva que validen que se han cumplido los objetivos.
-\item Primero se realizaron pruebas en el entorno virtual Gazebo para depurar el código.
+\item Primero pruebas en el entorno virtual Gazebo para depurar el código.
 \end{itemize}
 
 \begin{minipage}[t]{0.3\textwidth}
@@ -385,7 +365,7 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 \begin{hslide}
 \slsubsect{Experimento uno con drone real}
 \begin{itemize}
-\item El siguiente paso fue con el drone real sin poner a bordo el \emph{Computer Stick}.
+\item Siguiente paso con el drone real sin poner a bordo el \emph{Computer Stick}.
 \end{itemize}
 
 \begin{minipage}[t]{0.3\textwidth}
@@ -402,9 +382,9 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 \begin{hslide}
 \slsubsect{Experimento dos con drone real}
 \begin{itemize}
-\item Experimento con el \emph{Computer Stick} a bordo del drone. Este experimento es el que valida el desarrollo del proyecto.
+\item \emph{Computer Stick} a bordo del drone. Este experimento valida el desarrollo del proyecto.
 \item El resultado del experimento es fallido.
-\item El peso de la cámara con el \emph{Computer Stick} y la pila para alimentarlo supera la carga de peso máxima permitida por este drone.
+\item El peso de la cámara, el \emph{Computer Stick} y la pila para alimentarlo supera la carga de peso máxima permitida por este drone.
 \end{itemize}
 \end{hslide}
 
