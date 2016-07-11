@@ -38,7 +38,7 @@
 \begin{itemize}
 \item Introducción 
 \item Objetivos
-\item Infraestructura software
+\item Infraestructura
 \item Desarrollo software
 \item Experimentos
 \item Conclusiones
@@ -123,13 +123,13 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsect{Infraestructura software}
+\slsect{Infraestructura}
 \begin{minipage}[t]{0.7\textwidth}
 \begin{itemize}
-\item ArDrone2.0 de Parrot: drone sobre el que se basa el proyecto.
-\item Simulador Gazebo: Simula sensores,actuadores... del ArDrone en un mundo virtual.
-\item ICE: \emph{Middleware} para conexiones entre lenguajes y entre plataformas.
-\item JdeRobot: Se han usado dos drivers:
+\item ArDrone2.0 de Parrot
+\item Simulador Gazebo
+\item ICE: \emph{Middleware} para conexiones
+\item JdeRobot:
 \begin{itemize}
 \item \emph{Plugin de Gazebo}: Versión virtual del drone.
 \item \emph{ArDroneServer}: Servidor del drone real.
@@ -159,7 +159,7 @@ Sub-objetivos:
 \begin{hslide}
 \slsubsect{WebRTC}
 \begin{itemize}
-\item Tecnología web que permite comunicaciones entre navegadores en tiempo real.
+\item Tecnología de comunicaciones entre navegadores en tiempo real.
 \item Transmisión de audio, vídeo y datos.
 \item Sin necesidad de servidores intermedios.
 \end{itemize}
@@ -187,7 +187,7 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Flujo de llamadas del proyecto}
+\slsubsect{Flujo de llamadas}
 \begin{center}
 \begin{figure}
 \includegraphics[width=0.8\textwidth]{img/diagrama_general}
@@ -198,8 +198,8 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión local}
-\begin{minipage}[t]{0.7\textwidth}
+\slsubsect{CONEXIÓN LOCAL}
+\begin{minipage}[t]{0.6\textwidth}
 \begin{itemize}
 \item Esta conexión se divide en dos a su vez:
 \begin{itemize}
@@ -209,10 +209,10 @@ Sub-objetivos:
 \end{itemize}
 
 \end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.6\textwidth}
 \begin{center}
 \begin{figure}
-\includegraphics[width=0.8\textwidth]{img/conexionlocal}
+\includegraphics[width=0.9\textwidth]{img/conexionlocal}
 \end{figure}
 \end{center}
 \end{minipage}
@@ -222,7 +222,7 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión local: ArDroneServer y WebSockets}
+\slsubsect{ArDroneServer y WebSockets}
 \begin{itemize}
 \item Para establecer la conexión se han activado los WebSockets de ICEJS en el archivo de configuración del servidor ArDroneServer.
 \end{itemize}
@@ -231,7 +231,7 @@ Sub-objetivos:
  Ice.Plugin.IceWS=IceWS:createIceWS
 \end{lstlisting}
 \begin{itemize}
-\item En el lado cliente se ha desarrollado la conexión con promesas de JavaScript.
+\item En el lado cliente la conexión mediante promesas de JavaScript.
 \end{itemize}
 
 \begin{center}
@@ -244,7 +244,7 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión local: getUserMedia}
+\slsubsect{getUserMedia}
 \begin{center}
 \begin{figure}
 \includegraphics[width=1.1\textwidth]{img/getusermedia}
@@ -256,15 +256,12 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión entre navegadores}
+\slsubsect{CONEXIÓN ENTRE NAVEGADORES}
 \begin{minipage}[t]{0.6\textwidth}
 \begin{itemize}
-\item Necesidad de un servidor de señalización para establecer la conexión: Descubrimiento de pares e intercambio de SDP.
-\item Dos funciones principales.
-\begin{itemize}
+\item Servidor de señalización para: Descubrimiento de pares e intercambio de SDP.
 \item Transferir el flujo audiovisual de la cámara.
 \item Intercambio de datos: sensores, órdenes.
-\end{itemize}
 \end{itemize}
 
 \end{minipage}
@@ -282,11 +279,11 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión entre navegadores: Servidor de señalización}
+\slsubsect{Servidor de señalización}
 \begin{itemize}
 \item Escrito en Node.js
-\item Encargado del intercambio de paquetes entre los pares con los descriptores de sesión y los candidatos ICE.
-\item Utilización de librería \emph{Socket.io} para el intercambio de paquetes a través de \emph{WebSockets} entre los navegadores.
+\item Intercambio de paquetes entre los pares con los descriptores de sesión y los candidatos ICE.
+\item Librería \emph{Socket.io} para el intercambio de paquetes a través de \emph{WebSockets} entre los navegadores.
 \item Desarrollado para satisfacer la arquitectura JSEP.
 \end{itemize}
 \end{hslide}
@@ -294,7 +291,7 @@ Sub-objetivos:
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión entre navegadores: Transmisión de vídeo con RTCPeerConnection}
+\slsubsect{Transmisión de vídeo con RTCPeerConnection}
 \begin{itemize}
 \item Esta conexión se establece con la API \emph{RTCPeerConnection} de WebRTC.
 \end{itemize}
@@ -308,16 +305,16 @@ var PC=new RTCPeerConnection(ICE_config,pc_constraints);
 \end{itemize}
 \lstset{}
 \begin{lstlisting}
- PeerConnection.addStream(localStream);
+ PC.addStream(localStream);
 \end{lstlisting}
 \end{hslide}
 
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión entre navegadores: Transmisión de datos con RTCDataChannel}
+\slsubsect{Transmisión de datos con RTCDataChannel}
 \begin{itemize}
-\item \emph{RTCDataChannel} de WebRTC nos permite transferir cualquier tipo de dato a través de \emph{RTCPeerConnection}.
+\item \emph{RTCDataChannel} de WebRTC permite transferir cualquier tipo de dato a través de \emph{RTCPeerConnection}.
 \end{itemize}
 \lstset{}
 \begin{lstlisting}
@@ -326,7 +323,7 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 
 \begin{itemize}
 \item Transfiere desde el navegador local al navegador remoto los datos de los sensores del drone.
-\item Desde el par remoto al par local se transfiere las órdenes de movimiento dadas por el usuario final.
+\item Desde el par remoto al par local se transfieren las órdenes de movimiento dadas por el usuario final.
 \end{itemize}
 \end{hslide}
 
@@ -334,7 +331,7 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Conexión entre navegadores: Interfaz web de usuario en cliente remoto}
+\slsubsect{INTERFAZ WEB DE USUARIO EN CLIENTE REMOTO}
 \begin{center}
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{img/interfazweb}
@@ -363,7 +360,7 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Experimento uno con drone real}
+\slsubsect{Experimento con drone real}
 \begin{itemize}
 \item Siguiente paso con el drone real sin poner a bordo el \emph{Computer Stick}.
 \end{itemize}
@@ -380,10 +377,10 @@ DC=PC.createDataChannel("droneDataChannel",{ordered:false});
 %%--------------------------------------------------------------
 
 \begin{hslide}
-\slsubsect{Experimento dos con drone real}
+\slsubsect{Experimento todo en drone real}
 \begin{itemize}
-\item \emph{Computer Stick} a bordo del drone. Este experimento valida el desarrollo del proyecto.
-\item El resultado del experimento es fallido.
+\item \emph{Computer Stick} a bordo del drone.
+\item El resultado del experimento es fallido: no puede con el peso.
 \item El peso de la cámara, el \emph{Computer Stick} y la pila para alimentarlo supera la carga de peso máxima permitida por este drone.
 \end{itemize}
 \end{hslide}
